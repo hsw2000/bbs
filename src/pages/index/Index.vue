@@ -21,11 +21,20 @@
             成电小清新
           </div>
           <div class="info-right-bottom">
-            <a href="">
-              新消息
-              <div class="xiaohongdian">1</div>
-            </a>
-            <router-link :to="{path:'/personal-center'}">个人中心</router-link>
+            <div v-if="isLoggedIn">
+              <a href="">
+                新消息
+                <div class="xiaohongdian">1</div>
+              </a>
+              <router-link :to="{path:'/personal-center'}">个人中心</router-link>
+              <a href="" @click="handleLogout">登出</a>
+            </div>
+            <div v-else>
+              <a href="/login">
+                登录
+              </a>
+            </div>
+            
           </div>
         </div>
       </div>
@@ -105,7 +114,9 @@ export default {
             el: '.swiper-pagination'
           },
           // Some Swiper option/callback...
-        }
+      },
+      isLoggedIn: false,
+      username: ''
     }
   },
   components: {
@@ -117,12 +128,29 @@ export default {
     }
   },
   mounted() {
-    console.log('Current Swiper instance object', this.swiper)
+    if (localStorage.username) {
+      console.log('storage')
+      this.isLoggedIn = true
+      this.username = localStorage.name;
+    }else{
+      console.log('not-storage')
+
+    }
   },
   methods: {
     handleForumClick(catagoryName) {
       console.log(catagoryName)
       this.$router.push('/forum-home')
+    },
+    handleLogout() {
+      localStorage.removeItem('username');
+      this.isLoggedIn = false;
+      this.username = '';
+    }
+  },
+  watch: {
+    '$store.state.isLoggedIn': function () {
+      this.isLoggedIn = true
     }
   }
 }
@@ -221,6 +249,7 @@ export default {
   .body-left
     width 78%
     margin-right 0%
+    overflow hidden
   .body-right
     width 14%
     .search 

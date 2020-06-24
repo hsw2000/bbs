@@ -32,140 +32,142 @@
     </div>
     <div class="right">
       <ul class="tabs">
-        <li class="{chosen-tab: chosen == 'newestMsg'}" @click="handleTabsClick('newestMsg')">最新消息</li>
-        <li class="{chosen-tab: chosen == 'myPosts'}"  @click="handleTabsClick('myPosts')">我的帖子</li>
-        <li class="{chosen-tab: chosen == 'msgBox'}"  @click="handleTabsClick('msgBox')">私信信箱</li>
-        <li class="{chosen-tab: chosen == 'blacklist'}"  @click="handleTabsClick('blacklist')">黑名单</li>
+        <li :class="{'chosen-tab': chosen == 'newestMsg'}" @click="handleTabsClick('newestMsg')">最新消息</li>
+        <li :class="{'chosen-tab': chosen == 'myPosts'}"  @click="handleTabsClick('myPosts')">我的帖子</li>
+        <li :class="{'chosen-tab': chosen == 'msgBox'}"  @click="handleTabsClick('msgBox')">私信信箱</li>
+        <li :class="{'chosen-tab': chosen == 'blacklist'}"  @click="handleTabsClick('blacklist')">黑名单</li>
       </ul>
-      <div class="newest-msg" v-show="chosen == 'newestMsg'">
-        <div class="newest-msg-title">最新回复</div>
-        <ul>
-          <li>
-            <div class="newest-msg-avatar">
-              <img src="icons/avatar.svg" alt="">
-            </div>
-            <div class="newest-msg-main">
-              <span class="newest-msg-username">成电老司机
-                <span class="newest-msg-zan">赞了你的回复</span>
-              </span>
-              <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-            </div>
-            <div class="newest-msg-time">
-              2020.5.21 16:30
-            </div>
-          </li>
-          <li>
-            <div class="newest-msg-avatar">
-              <img src="icons/avatar.svg" alt="">
-            </div>
-            <div class="newest-msg-main">
-              <span class="newest-msg-username">成电老司机
-                <span class="newest-msg-zan">赞了你的回复</span>
-              </span>
-              <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-            </div>
-            <div class="newest-msg-time">
-              2020.5.21 16:30
-            </div>
-          </li>
-          <li>
-            <div class="newest-msg-avatar">
-              <img src="icons/avatar.svg" alt="">
-            </div>
-            <div class="newest-msg-main">
-              <span class="newest-msg-username">成电老司机
-                <span class="newest-msg-zan">赞了你的回复</span>
-              </span>
-              <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-            </div>
-            <div class="newest-msg-time">
-              2020.5.21 16:30
-            </div>
-          </li>
-          <li>
-            <div class="newest-msg-avatar">
-              <img src="icons/avatar.svg" alt="">
-            </div>
-            <div class="newest-msg-main">
-              <span class="newest-msg-username">成电老司机
-                <span class="newest-msg-zan">赞了你的回复</span>
-              </span>
-              <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-            </div>
-            <div class="newest-msg-time">
-              2020.5.21 16:30
-            </div>
-          </li>
-        </ul>
-        <div class="see-more">查看更多</div>
-        <div class="newest-msg-title">最新点赞</div>
-        <ul>
-          <li>
-            <div class="newest-msg-avatar">
-              <img src="icons/avatar.svg" alt="">
-            </div>
-            <div class="newest-msg-main">
-              <span class="newest-msg-username">成电老司机
-                <span class="newest-msg-zan">赞了你的回复</span>
-              </span>
-              <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-            </div>
-            <div class="newest-msg-time">
-              2020.5.21 16:30
-            </div>
-          </li>
-          <li>
-            <div class="newest-msg-avatar">
-              <img src="icons/avatar.svg" alt="">
-            </div>
-            <div class="newest-msg-main">
-              <span class="newest-msg-username">成电老司机
-                <span class="newest-msg-zan">赞了你的回复</span>
-              </span>
-              <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-            </div>
-            <div class="newest-msg-time">
-              2020.5.21 16:30
-            </div>
-          </li>
-          <li>
-            <div class="newest-msg-avatar">
-              <img src="icons/avatar.svg" alt="">
-            </div>
-            <div class="newest-msg-main">
-              <span class="newest-msg-username">成电老司机
-                <span class="newest-msg-zan">赞了你的回复</span>
-              </span>
-              <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-            </div>
-            <div class="newest-msg-time">
-              2020.5.21 16:30
-            </div>
-          </li>
-          <li>
-            <div class="newest-msg-avatar">
-              <img src="icons/avatar.svg" alt="">
-            </div>
-            <div class="newest-msg-main">
-              <span class="newest-msg-username">成电老司机
-                <span class="newest-msg-zan">赞了你的回复</span>
-              </span>
-              <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-            </div>
-            <div class="newest-msg-time">
-              2020.5.21 16:30
-            </div>
-          </li>
-        </ul>
-        <div class="see-more">查看更多</div>
-      </div>
-      <div class="my-posts" v-show="chosen == 'myPosts'">
-        <list></list>
-      </div>
-      <msgbox></msgbox>
-      <div class="blacklist"  v-show="chosen == 'blacklist'">
-        BLACKLIST
-      </div>
+      <transition-group name="slide" mode="int-out">
+        <div class="newest-msg" v-show="chosen == 'newestMsg'" key=1>
+          <div class="newest-msg-title">最新回复</div>
+          <ul>
+            <li>
+              <div class="newest-msg-avatar">
+                <img src="icons/avatar.svg" alt="">
+              </div>
+              <div class="newest-msg-main">
+                <span class="newest-msg-username">成电老司机
+                  <span class="newest-msg-zan">赞了你的回复</span>
+                </span>
+                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
+              </div>
+              <div class="newest-msg-time">
+                2020.5.21 16:30
+              </div>
+            </li>
+            <li>
+              <div class="newest-msg-avatar">
+                <img src="icons/avatar.svg" alt="">
+              </div>
+              <div class="newest-msg-main">
+                <span class="newest-msg-username">成电老司机
+                  <span class="newest-msg-zan">赞了你的回复</span>
+                </span>
+                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
+              </div>
+              <div class="newest-msg-time">
+                2020.5.21 16:30
+              </div>
+            </li>
+            <li>
+              <div class="newest-msg-avatar">
+                <img src="icons/avatar.svg" alt="">
+              </div>
+              <div class="newest-msg-main">
+                <span class="newest-msg-username">成电老司机
+                  <span class="newest-msg-zan">赞了你的回复</span>
+                </span>
+                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
+              </div>
+              <div class="newest-msg-time">
+                2020.5.21 16:30
+              </div>
+            </li>
+            <li>
+              <div class="newest-msg-avatar">
+                <img src="icons/avatar.svg" alt="">
+              </div>
+              <div class="newest-msg-main">
+                <span class="newest-msg-username">成电老司机
+                  <span class="newest-msg-zan">赞了你的回复</span>
+                </span>
+                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
+              </div>
+              <div class="newest-msg-time">
+                2020.5.21 16:30
+              </div>
+            </li>
+          </ul>
+          <div class="see-more">查看更多</div>
+          <div class="newest-msg-title">最新点赞</div>
+          <ul>
+            <li>
+              <div class="newest-msg-avatar">
+                <img src="icons/avatar.svg" alt="">
+              </div>
+              <div class="newest-msg-main">
+                <span class="newest-msg-username">成电老司机
+                  <span class="newest-msg-zan">赞了你的回复</span>
+                </span>
+                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
+              </div>
+              <div class="newest-msg-time">
+                2020.5.21 16:30
+              </div>
+            </li>
+            <li>
+              <div class="newest-msg-avatar">
+                <img src="icons/avatar.svg" alt="">
+              </div>
+              <div class="newest-msg-main">
+                <span class="newest-msg-username">成电老司机
+                  <span class="newest-msg-zan">赞了你的回复</span>
+                </span>
+                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
+              </div>
+              <div class="newest-msg-time">
+                2020.5.21 16:30
+              </div>
+            </li>
+            <li>
+              <div class="newest-msg-avatar">
+                <img src="icons/avatar.svg" alt="">
+              </div>
+              <div class="newest-msg-main">
+                <span class="newest-msg-username">成电老司机
+                  <span class="newest-msg-zan">赞了你的回复</span>
+                </span>
+                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
+              </div>
+              <div class="newest-msg-time">
+                2020.5.21 16:30
+              </div>
+            </li>
+            <li>
+              <div class="newest-msg-avatar">
+                <img src="icons/avatar.svg" alt="">
+              </div>
+              <div class="newest-msg-main">
+                <span class="newest-msg-username">成电老司机
+                  <span class="newest-msg-zan">赞了你的回复</span>
+                </span>
+                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
+              </div>
+              <div class="newest-msg-time">
+                2020.5.21 16:30
+              </div>
+            </li>
+          </ul>
+          <div class="see-more">查看更多</div>
+        </div>
+        <div class="my-posts" v-show="chosen == 'myPosts'" key=2>
+          <list></list>
+        </div>
+        <msgbox v-show="chosen == 'msgBox'" key=3></msgbox>
+        <div class="blacklist"  v-show="chosen == 'blacklist'" key=4>
+          BLACKLIST
+        </div>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -173,6 +175,7 @@
 <script>
 import List from '../list/List.vue'
 import Msgbox from '../msgbox/Msgbox.vue'
+
 export default {
   data() {
     return {
@@ -180,7 +183,8 @@ export default {
     }
   },
   components: {
-    List
+    List,
+    Msgbox
   },
   methods: {
     handleTabsClick(tabName) {
@@ -227,7 +231,7 @@ export default {
       margin-top 30px
       li
         font-size 18px
-        line-height 40px
+        line-height 30px
         color #00386C
   .right
     width 75%
@@ -286,14 +290,12 @@ export default {
         line-height 50px
     .my-posts
       margin-left 15px
-    .msgbox
-      margin-left 15px
-      .msgbox-left
-        width 12%
-        .msg-left-title
-          font-weight 700
-          line-height 40px
-          text-align center
     .blacklist
       margin-left 15px
+.slide-enter-active, .slide-leave-avtive 
+  transition all .5s
+.slide-enter 
+  transform translateX(100%)
+.slide-leave-to
+  transform translateX(-100%)
 </style>
