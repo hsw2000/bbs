@@ -30,7 +30,7 @@
               <a href="" @click="handleLogout">登出</a>
             </div>
             <div v-else>
-              <a href="/login">
+              <a href="/projects/bbs/login.html">
                 登录
               </a>
             </div>
@@ -73,14 +73,15 @@
           <span class="personalcenter-title">个人中心</span>
           <ul>
             <li>
-              <span>我的帖子 
-                <xiaohongdian></xiaohongdian>
-              </span>
+              <router-link :to="{path:'/personal-center'}">
+              我的帖子<xiaohongdian></xiaohongdian>
+              </router-link>
+              
             </li>
             <li>
-              <span>个人信息
-                <xiaohongdian></xiaohongdian>
-              </span>
+              <router-link :to="{path:'/personal-center'}">
+              个人信息<xiaohongdian></xiaohongdian>
+              </router-link>
             </li>
             <li><span>最新回复 <xiaohongdian></xiaohongdian></span></li>
             <li><span>收到的赞 <xiaohongdian></xiaohongdian></span></li>
@@ -92,9 +93,15 @@
         </div>
         <!-- <div class="swiper-container"> -->
           <swiper ref="mySwiper" :options="swiperOptions">
-            <swiper-slide>Slide1 </swiper-slide>
-            <swiper-slide>Slide 2</swiper-slide>
-            <swiper-slide>Slide 3</swiper-slide>
+            <swiper-slide>
+              <div class="swiper-item">Slide 1</div>
+            </swiper-slide>
+            <swiper-slide>
+              <div class="swiper-item">Slide 2</div>
+            </swiper-slide>
+            <swiper-slide>
+              <div class="swiper-item">Slide 3</div>
+            </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
         <!-- </div> -->
@@ -312,15 +319,19 @@ export default {
           width 50%
           text-align center
           line-height 37px
-          span 
+          a
             position relative
             font-size 14px
             line-height 37px
+            color #333
     .swiper-container
       margin-top 40px
       width 100%
       height 275px
       --swiper-theme-color #000
+      .swiper-item
+        background-color pink
+        font-size 20px
 .fade-enter-active, .fade-leave-avtive 
     transition opacity .5s
 .fade-enter, .fade-leave-to 

@@ -36,9 +36,11 @@
         <li :class="{'chosen-tab': chosen == 'myPosts'}"  @click="handleTabsClick('myPosts')">我的帖子</li>
         <li :class="{'chosen-tab': chosen == 'msgBox'}"  @click="handleTabsClick('msgBox')">私信信箱</li>
         <li :class="{'chosen-tab': chosen == 'blacklist'}"  @click="handleTabsClick('blacklist')">黑名单</li>
+        <li :class="{'chosen-tab': chosen == 'followlist'}"  @click="handleTabsClick('followlist')">关注列表</li>
+        <li :class="{'chosen-tab': chosen == 'fanslist'}"  @click="handleTabsClick('fanslist')">粉丝列表</li>
       </ul>
-      <transition-group name="slide" mode="int-out">
-        <div class="newest-msg" v-show="chosen == 'newestMsg'" key=1>
+      <transition-group :name="viewAnimate">
+        <div class="newest-msg" v-if="chosen == 'newestMsg'" key=1>
           <div class="newest-msg-title">最新回复</div>
           <ul>
             <li>
@@ -160,13 +162,21 @@
           </ul>
           <div class="see-more">查看更多</div>
         </div>
-        <div class="my-posts" v-show="chosen == 'myPosts'" key=2>
+        <div class="my-posts" v-if="chosen == 'myPosts'" key=2>
           <list></list>
         </div>
-        <msgbox v-show="chosen == 'msgBox'" key=3></msgbox>
-        <div class="blacklist"  v-show="chosen == 'blacklist'" key=4>
-          BLACKLIST
-        </div>
+        <msgbox v-if="chosen == 'msgBox'" key=3>
+
+        </msgbox>
+        <userslist title="拉黑列表" class="blacklist"  v-if="chosen == 'blacklist'" key=4>
+
+        </userslist>
+        <userslist title="关注列表" class="followlist"  v-if="chosen == 'followlist'" key=5>
+
+        </userslist>
+        <userslist title="粉丝列表" class="fanslist"  v-if="chosen == 'fanslist'" key=6>
+
+        </userslist>
       </transition-group>
     </div>
   </div>
@@ -175,21 +185,58 @@
 <script>
 import List from '../list/List.vue'
 import Msgbox from '../msgbox/Msgbox.vue'
-
+import Userslist from '../userslist/UsersList.vue'
 export default {
   data() {
     return {
-      chosen: 'newestMsg'
+      chosen: 'newestMsg',
+      tabIndex: 0,
+      viewAnimate: ''
     }
   },
   components: {
     List,
-    Msgbox
+    Msgbox,
+    Userslist
   },
   methods: {
     handleTabsClick(tabName) {
-      console.log(tabName)
+      const lastIdx = this.tabIndex
+      switch(tabName) {
+        case 'newestMsg': {
+          this.tabIndex = 0;
+          break;
+        }
+        case 'myPosts': {
+          this.tabIndex = 1;
+          break;
+        }
+        case 'msgBox': {
+          this.tabIndex = 2;
+          break;
+        }
+        case 'blacklist': {
+          this.tabIndex = 3;
+          break;
+        }
+        case 'followlist': {
+          this.tabIndex = 4;
+          break;
+        }
+        case 'fanslist': {
+          this.tabIndex = 5
+        }
+      }
+      if(this.tabIndex > lastIdx) {
+        this.viewAnimate = 'slide-left'
+        console.log('forward')
+      }else {
+        this.viewAnimate = 'slide-right'
+        console.log('backward')
+
+      }
       this.chosen = tabName
+
     }
   }
 }
@@ -198,8 +245,12 @@ export default {
 <style lang="stylus" scoped>
 .personal-center
   display flex
+  height 876px
   .left 
     width 25%
+    border 1px solid rgba(221, 221, 221, 1)
+    border-radius 10px
+    background-color #fff
     .avatar
       margin 50px auto 0 auto
       width 150px
@@ -229,19 +280,27 @@ export default {
       opacity 0.2
     .info-bottom
       margin-top 30px
+      margin-left 15px
       li
         font-size 18px
-        line-height 30px
+        line-height 40px
         color #00386C
+    .modify-info
+      margin-top 50px
+      display block
+      text-align center
   .right
+    position relative
     width 75%
     background-color #fff
+    overflow hidden
     .tabs
       li
         display inline-block
         padding 0 20px
         font-size 14px
         line-height 40px
+        cursor pointer
       .chosen-tab
         border-bottom 1px solid #108EE9
         color #108EE9
@@ -292,6 +351,10 @@ export default {
       margin-left 15px
     .blacklist
       margin-left 15px
+    .newest-msg, .my-posts, .msgbox, .blacklist, .followlist, .fanslist
+      position absolute
+      left 0
+      top 40px
 .slide-enter-active, .slide-leave-avtive 
   transition all .5s
 .slide-enter 
@@ -299,3 +362,30 @@ export default {
 .slide-leave-to
   transform translateX(-100%)
 </style>
+<style scoped>
+.slide-right-leave-active, .slide-right-enter-active, .slide-left-leave-active, .slide-left-enter-active {
+  transition: all 0.5s linear;
+}
+.slide-right-leave-to {
+  transform: translateX(100%);
+}
+.slide-right-enter {
+  transform: translateX(-100%);
+}
+.slide-right-enter-to {
+  transform: translateX(0);
+}
+
+.slide-left-leave-to {
+  transform: translateX(-100%);
+}
+.slide-left-enter {
+  transform: translateX(100%);
+}
+
+.slide-left-enter-to {
+  transform: translateX(0);
+}
+
+</style>
+

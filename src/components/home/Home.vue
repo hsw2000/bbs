@@ -35,6 +35,7 @@ export default {
 .home
   width 100%
   .tabs 
+    cursor pointer
     .tabs-chosen
       border-bottom 3px solid rgba(45, 128, 206, 1)
       color rgba(45, 128, 206, 1)

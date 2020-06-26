@@ -319,6 +319,7 @@
   font-style:normal;
   font-size:14px;
   color:#FFFFFF;
+  text-align:center;
 }
 
 #textYHD {
@@ -372,6 +373,7 @@
   text-align:left;
   word-wrap:break-word;
   text-transform:none;
+  cursor: pointer;
 }
 #savePassword{
   position:absolute;
@@ -386,6 +388,7 @@
   width:163px;
   height:39px;
   display:flex;
+  margin-right: 20px;
   font-family:'Constantia';
   font-weight:400;
   font-style:normal;
@@ -393,5 +396,5 @@
   color:#000000;
   text-align:left;
   word-wrap:break-word;
-  text-transform:none;r:
+  text-transform:none;
 }

@@ -1,7 +1,12 @@
 <template>
   <ul class="list">
     
-    <li @click="handleLiClick" class="list-item">
+    <li
+      @click="handleLiClick" 
+      class="list-item"
+      v-for="i in arr"
+      :key = i  
+    >
       <div class="list-item-left">【神技水吧】</div>
       <div class="list-item-mid">
         <span class="list-item-mid-top">[理性讨论帖]什么是最好的编程语言？我投PHP一票，其他编程语言都是异端</span>
@@ -24,103 +29,27 @@
         您关注的<span>才不是技术宅呢</span>点赞过
       </div>
     </li>
-    <li @click="handleLiClick" class="list-item">
-      <div class="list-item-left">【神技水吧】</div>
-      <div class="list-item-mid">
-        <span class="list-item-mid-top">[理性讨论帖]什么是最好的编程语言？我投PHP一票，其他编程语言都是异端</span>
-        <span class="list-item-mid-bottom">我点名了 python是坏东西!!(￣ε(#￣)☆╰╮(￣▽￣///) 大家来battle呀 要陈述理由哦 不可以随意灌水</span>
-      </div>
-      
-      <div class="list-item-right">
-        <div class="list-item-right-top">
-          <img class="icon" src="icons/eye.svg">
-          <span class="icon-num-left">1234</span>
-          <img class="icon" src="icons/message.svg">
-          <span class="icon-num">567</span>
-        </div>
-        <div class="list-item-right-bottom">
-          <span class="owner">科技动向看板娘</span>
-          <span class="time">今天10:56</span>
-        </div>
-      </div>
-      <div class="list-item-midright">
-        您关注的<span>才不是技术宅呢</span>点赞过
-      </div>
-    </li>
-    <li @click="handleLiClick" class="list-item">
-      <div class="list-item-left">【神技水吧】</div>
-      <div class="list-item-mid">
-        <span class="list-item-mid-top">[理性讨论帖]什么是最好的编程语言？我投PHP一票，其他编程语言都是异端</span>
-        <span class="list-item-mid-bottom">我点名了 python是坏东西!!(￣ε(#￣)☆╰╮(￣▽￣///) 大家来battle呀 要陈述理由哦 不可以随意灌水</span>
-      </div>
-      
-      <div class="list-item-right">
-        <div class="list-item-right-top">
-          <img class="icon" src="icons/eye.svg">
-          <span class="icon-num-left">1234</span>
-          <img class="icon" src="icons/message.svg">
-          <span class="icon-num">567</span>
-        </div>
-        <div class="list-item-right-bottom">
-          <span class="owner">科技动向看板娘</span>
-          <span class="time">今天10:56</span>
-        </div>
-      </div>
-      <div class="list-item-midright">
-        您关注的<span>才不是技术宅呢</span>点赞过
-      </div>
-    </li>
-    <li @click="handleLiClick" class="list-item">
-      <div class="list-item-left">【神技水吧】</div>
-      <div class="list-item-mid">
-        <span class="list-item-mid-top">[理性讨论帖]什么是最好的编程语言？我投PHP一票，其他编程语言都是异端</span>
-        <span class="list-item-mid-bottom">我点名了 python是坏东西!!(￣ε(#￣)☆╰╮(￣▽￣///) 大家来battle呀 要陈述理由哦 不可以随意灌水</span>
-      </div>
-      
-      <div class="list-item-right">
-        <div class="list-item-right-top">
-          <img class="icon" src="icons/eye.svg">
-          <span class="icon-num-left">1234</span>
-          <img class="icon" src="icons/message.svg">
-          <span class="icon-num">567</span>
-        </div>
-        <div class="list-item-right-bottom">
-          <span class="owner">科技动向看板娘</span>
-          <span class="time">今天10:56</span>
-        </div>
-      </div>
-      <div class="list-item-midright">
-        您关注的<span>才不是技术宅呢</span>点赞过
-      </div>
-    </li>
-    <li @click="handleLiClick" class="list-item">
-      <div class="list-item-left">【神技水吧】</div>
-      <div class="list-item-mid">
-        <span class="list-item-mid-top">[理性讨论帖]什么是最好的编程语言？我投PHP一票，其他编程语言都是异端</span>
-        <span class="list-item-mid-bottom">我点名了 python是坏东西!!(￣ε(#￣)☆╰╮(￣▽￣///) 大家来battle呀 要陈述理由哦 不可以随意灌水</span>
-      </div>
-      
-      <div class="list-item-right">
-        <div class="list-item-right-top">
-          <img class="icon" src="icons/eye.svg">
-          <span class="icon-num-left">1234</span>
-          <img class="icon" src="icons/message.svg">
-          <span class="icon-num">567</span>
-        </div>
-        <div class="list-item-right-bottom">
-          <span class="owner">科技动向看板娘</span>
-          <span class="time">今天10:56</span>
-        </div>
-      </div>
-      <div class="list-item-midright">
-        您关注的<span>才不是技术宅呢</span>点赞过
-      </div>
-    </li>
+    
   </ul>
 </template>
 
 <script>
 export default {
+  props: {
+    num: {
+      type: Number,
+      default: 15
+    }
+  },
+  computed: {
+    arr() {
+      let arr = [];
+      for(let i = 0; i < this.num; i++) {
+        arr[i] = i
+      }
+      return arr
+    }
+  },
   methods: {
     handleLiClick() {
       this.$router.push('/detail')

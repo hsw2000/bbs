@@ -55,7 +55,7 @@
                 <form method="GET"> 
                   <input id ="password" name = "password" type = "password" placeholder="请输入密码" maxlength="20">
                   <input id="username" type="text" name = username placeholder="请输入用户名" maxlength="30"/>
-                  <label id="login" for="savePassword" style="margin:auto;font-size:15px">点我记住密码：</label>
+                  <label id="login" for="savePassword" style="font-size:15px">点我记住密码：</label>
                   <input type="checkbox" name="savePassword" id="savePassword" checked="checked" onclick="SavePassword()">
                    <input id= "submit" @click="submitLogin" value="登陆"/>
                 </form>

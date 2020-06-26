@@ -1,10 +1,40 @@
 <template>
-  <div class="xiaohongdian">2</div>
+  <div class="xiaohongdian" :style="styleObj">2</div>
 </template>
 
 <script>
 export default {
-  
+  props: {
+    width: {
+      type: Number,
+      default: 15
+    },
+    color: {
+      type: String,
+      default: '#fff'
+    },
+    offset: {
+      type: Number,
+      default: 7.5
+    },
+    fontsize: {
+      type: Number,
+      default: 9
+    }
+  },
+  data() {
+    return {
+      styleObj: {
+        width: this.width + 'px',
+        height: this.width + 'px',
+        color: this.color,
+        right: -this.offset + 'px',
+        top: -this.offset + 'px',
+        lineHeight: this.width + 'px',
+        fontSize: this.fontsize + 'px'
+      }
+    }
+  }
 }
 </script>
 

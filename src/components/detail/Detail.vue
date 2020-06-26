@@ -17,9 +17,11 @@
       </div>
     </div>
     <ul class="detail-list">
-      <li class="item">
+      <li class="item" v-for="i in arr" :key="i">
         <div class="item-left">
-          <div class="item-left-avatar"></div>
+          <div class="item-left-avatar">
+            <img src="icons/default_avatar.svg" alt="">
+          </div>
           <div class="item-left-username">USERNAME</div>
           <div class="item-left-op">
             <span>关注</span>
@@ -47,107 +49,31 @@
           </div>
         </div>
       </li>
-      <li class="item">
-        <div class="item-left">
-          <div class="item-left-avatar"></div>
-          <div class="item-left-username">USERNAME</div>
-          <div class="item-left-op">
-            <span>关注</span>
-            <span>私信</span>
-          </div>
-        </div>
-        <div class="item-right">
-          <div class="item-right-floor">
-            <span>2019-10-19 15:07:10&nbsp;&nbsp; </span>
-            <span>2楼</span>
-          </div>
-          <div class="item-right-line"></div>
-          <div class="item-right-main">
-            {{text}}
-          </div>
-          <div class="item-right-op">
-            <div class="item-zan">
-              <img src="../../../public/icons/dianzan_off.svg" alt="">
-              <span>点赞</span>
-            </div>
-            <div class="item-jubao">
-              <img src="../../../public/icons/flag.svg" alt="">
-              <span>举报</span>
-            </div>
-          </div>
-        </div>
-      </li>
-      <li class="item">
-        <div class="item-left">
-          <div class="item-left-avatar"></div>
-          <div class="item-left-username">USERNAME</div>
-          <div class="item-left-op">
-            <span>关注</span>
-            <span>私信</span>
-          </div>
-        </div>
-        <div class="item-right">
-          <div class="item-right-floor">
-            <span>2019-10-19 15:07:10&nbsp;&nbsp; </span>
-            <span>2楼</span>
-          </div>
-          <div class="item-right-line"></div>
-          <div class="item-right-main">
-            {{text}}
-          </div>
-          <div class="item-right-op">
-            <div class="item-zan">
-              <img src="../../../public/icons/dianzan_off.svg" alt="">
-              <span>点赞</span>
-            </div>
-            <div class="item-jubao">
-              <img src="../../../public/icons/flag.svg" alt="">
-              <span>举报</span>
-            </div>
-          </div>
-        </div>
-      </li>
-      <li class="item">
-        <div class="item-left">
-          <div class="item-left-avatar"></div>
-          <div class="item-left-username">USERNAME</div>
-          <div class="item-left-op">
-            <span>关注</span>
-            <span>私信</span>
-          </div>
-        </div>
-        <div class="item-right">
-          <div class="item-right-floor">
-            <span class="item-right-floor-time">2019-10-19 15:07:10&nbsp;&nbsp; </span>
-            <span class="item-right-floor-num">2楼</span>
-          </div>
-          <div class="item-right-line"></div>
-          <div class="item-right-main">
-            {{text}}
-            <img src="../../../public/icons/dianzan_off.svg" />
-        
-          </div>
-          <div class="item-right-op">
-            <div class="item-zan">
-              <img src="../../../public/icons/dianzan_off.svg" alt="">
-              <span>点赞</span>
-            </div>
-            <div class="item-jubao">
-              <img src="../../../public/icons/flag.svg" alt="">
-              <span>举报</span>
-            </div>
-          </div>
-        </div>
-      </li>
+      
     </ul>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    num: {
+      type: Number,
+      default: 10
+    }
+  },
   data() {
     return {
-      text: 'file:///C:/Users/Samuel/Documents/Tencent%20Files/1223929119/FileRecv/%E5%8E%9F%E5%9E%8B%E5%9B%BE2.0/4_%E5%B8%96%E5%AD%90%E5%86%85%E9%83%A8.html'
+      text: '噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n'
+    }
+  },
+  computed: {
+    arr() {
+      let arr = [];
+      for(let i = 0; i < this.num; i++) {
+        arr[i] = i
+      }
+      return arr
     }
   }
 }
@@ -185,13 +111,13 @@ export default {
     .item
       display flex
       .item-left
-        padding-top 20px
         width 14%
-        background-color rgba(247, 247, 255, 1)
+        padding-top 20px
+        img
+          width 100%
         .item-left-avatar
           margin 0 auto
           width 55%
-          padding-bottom 55%
           background-color pink
           border-radius 10px
         .item-left-username

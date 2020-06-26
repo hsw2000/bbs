@@ -21,5 +21,6 @@ module.exports = {
         title:'login',
         chunks: ["chunk-vendors", "chunk-common", "login"]
     }
-  }
+  },
+  publicPath: process.env.NODE_ENV === 'production' ? '/projects/bbs/' : '/'
 }

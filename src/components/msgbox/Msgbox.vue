@@ -4,11 +4,17 @@
       <div class="msgbox-left-title">最近私信</div>
       <ul>
         <li>
-          <img src="icons/avatar.svg" alt="">
-          <div class="msgbox-left-username">USERNAME</div>
+          <div class="msgbox-left-imgwrapper">
+            <img src="icons/avatar.svg" alt="">
+            <xiaohongdian :width="25" :fontsize="12"></xiaohongdian>
+          </div>
+          <div class="msgbox-left-username" >USERNAME</div>
         </li>
         <li>
-          <img src="icons/avatar.svg" alt="">
+          <div class="msgbox-left-imgwrapper">
+            <img src="icons/avatar.svg" alt="">
+            <xiaohongdian :width="25" :fontsize="12"></xiaohongdian>
+          </div>
           <div class="msgbox-left-username" >USERNAME</div>
         </li>
       </ul>
@@ -20,16 +26,30 @@
       </div>
       <ul id = "msgmid">
           <li class="msgmid-left">
-            <div>
+            <div class="li-inner">
             <img src="icons/avatar.svg" alt="">
-            <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
+              <div class="li-inner-msg">
+                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
+                <div>56分钟前</div>
+              </div>
+            </div>
+          </li>
+          <li class="msgmid-left">
+            <div class="li-inner">
+            <img src="icons/avatar.svg" alt="">
+              <div class="li-inner-msg">
+                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
+                <div>56分钟前</div>
+              </div>
             </div>
           </li>
           <li class="msgmid-right">
-            <div>
-            <p >很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比
-              </p>
-            <img src="icons/avatar.svg" alt="">
+            <div class="li-inner">
+              <div class="li-inner-msg">
+                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
+                <div>56分钟前</div>
+              </div>
+              <img src="icons/avatar.svg" alt="">
             </div>
           </li>
 
@@ -45,8 +65,11 @@
 </template>
 
 <script>
+import xiaohongdian from '../xiaohongdian/Xiaohongdian.vue'
 export default {
-
+  components: {
+    xiaohongdian
+  }
 }
 </script>
 
@@ -60,7 +83,7 @@ export default {
 }
   .msgbox-left {
     width: 12%;
-    border-bottom: 1px solid #BDBDBD;
+    border-bottom: 1px solid rgba(228, 228, 228, 1);
   }
   .msgbox-left-title {
     margin-bottom: 10px;
@@ -75,63 +98,86 @@ export default {
     align-items: center;
     margin-bottom: 20px;
   }
+  .msgbox-left-imgwrapper {
+    position: relative;
+  }
   .msgbox-left li img {
     width: 55px;
     height: 55px;
     border-radius: 50%;
+
   }
-  .msgbox-left li div {
+  .msgbox-left-username {
     color: #999;
     font-size: 12px;
   }
   .msgbox-right {
   width: 78%;
-  height:2250px;
-  border-left: 1px solid #BDBDBD;
+  height: 2250px;
   }
   #msgtop{
     width: 100%;
     height: 3%;
+    border: 1px solid #BDBDBD;
+    border-bottom: none;
     background-color:rgba(242, 242, 242, 1);
   }
   #msgmid{
     width: 100%;
     height: 400px;
-    margin-top: 10px;
-    border-bottom: 1px solid #BDBDBD;
+    padding-top: 10px;
+    border: 1px solid #BDBDBD;
+    border-top: none;
     overflow:scroll;
+  }
+  #msgmid::-webkit-scrollbar {
+    width: 0 !important ;
+    height: 0 !important;
+  }
+  #msgmid {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
   }
   #msgmid li {
     width: 96%;
     margin: 0 auto;
     overflow: hidden;
   }
-  #msgmid li div {
+  #msgmid li div.li-inner {
     width: 47%;
   }
-  .msgmid-left, .msgmid-left div{
+  .msgmid-left, .msgmid-left div.li-inner{
     display: flex;
     justify-content: left;
   }
-  .msgmid-right, .msgmid-right div {
+  .msgmid-right, .msgmid-right div.li-inner {
     display: flex;
     justify-content: right;
 
   }
   #msgmid li img {
+    position: relative;
+    top: 17px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
   }
+  #msgmid li div.li-inner-msg div{
+    margin: 0 17px;
+    color: #999999;
+  }
+  .msgmid-right .li-inner-msg div {
+    text-align: right;
+  }
   #msgmid li p {
     font-family: 'Microsoft Yahei';
-  font-weight: 400;
-  font-style: normal;
-  color: #999999;
-  text-align: left;
-  line-height: 24px;
-  background-color: rgba(249, 249, 249, 1);
-  padding: 13px 17px;
+    font-weight: 400;
+    font-style: normal;
+    color: #999999;
+    text-align: left;
+    line-height: 24px;
+    background-color: rgba(249, 249, 249, 1);
+    padding: 13px 17px;
   }
   .msgmid-left p {
     margin-left: 10px;
