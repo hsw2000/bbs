@@ -3,13 +3,13 @@
       <li
         @click="handleLiClick" 
         class="list-item"
-        v-for="(item,index) in list.slice(0, num)"
+        v-for="(item,index) in list"
         :key="index"  
       >
         <div class="list-item-left">【{{item.forum}}】</div>
         <div class="list-item-mid">
           <span class="list-item-mid-top">{{item.title}}</span>
-          <span class="list-item-mid-bottom">{{formatDesc(item.desc)}}</span>
+          <span class="list-item-mid-bottom">{{item.desc}}</span>
         </div>
         <div class="list-item-midright" v-if="showFollow">
           您关注的<span>{{item.follower}}</span>{{item.op}}过
@@ -57,9 +57,6 @@ export default {
     },
     formatDate(num) {
       return this.utils.formatDate(num)
-    },
-    formatDesc(str) {
-      return str.replace(/<\/?.+?>/g,"");
     }
   }
 }

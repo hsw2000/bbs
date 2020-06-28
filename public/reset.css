@@ -6,7 +6,7 @@ table{border-collapse:collapse;border-spacing:0}
 
 fieldset,img{border:0}
 
-address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}
+address,caption,cite,code,dfn,em,strong,th,var{}
 
 ol,ul{list-style:none}
 
@@ -32,11 +32,6 @@ input,textarea,select{*font-size:100%}
 
 legend{color:#000}#yui3-css-stamp.cssreset{display:none}
 
-
-*{
-    font: 100% Verdana, Futura, Helvetica, sans-serif;
-}
-
 body{
     color: #000;
     margin: auto;
@@ -45,7 +40,7 @@ body{
 
 nav{
     width: 19%;
-    heigh: 60%;
+    height: 60%;
     color: #fff;
     background-color: #e2001a;
     top: 0;

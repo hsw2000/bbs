@@ -8,15 +8,15 @@
         成电小萌新
       </div>
       <div class="info-top">
-        <div>
+        <div @click="handleTabsClick('followlist')">
           <span class="info-top-top">关注</span>
           <span class="info-top-bottom">333</span>
         </div>
-        <div>
+        <div @click="handleTabsClick('myPosts')">
           <span class="info-top-top">帖子</span>
           <span class="info-top-bottom">333</span>
         </div>
-        <div>
+        <div @click="handleTabsClick('fanslist')">
           <span class="info-top-top">粉丝</span>
           <span class="info-top-bottom">333</span>
         </div>
@@ -163,7 +163,28 @@
           <div class="see-more">查看更多</div>
         </div>
         <div class="my-posts" v-if="chosen == 'myPosts'" key=2>
-          <list></list>
+          <transition-group name="fade" mode="in-out">
+            <list 
+              :outline="outline" 
+              :num="num"
+              :list="lists"
+              v-if="showFirstList" 
+              key=1
+            ></list>
+            <list2
+              :outline="outline"
+              :num="num"
+              v-else
+              key=2
+            ></list2>
+          </transition-group>
+          <el-pagination 
+            @current-change="handleCurrentChange" 
+            class="pagination"
+            background
+            layout="prev, pager, next, jumper"
+            :total="50"  
+          ></el-pagination>
         </div>
         <msgbox v-if="chosen == 'msgBox'" key=3>
 
@@ -184,6 +205,7 @@
 
 <script>
 import List from '../list/List.vue'
+import List2 from '../list/List2.vue'
 import Msgbox from '../msgbox/Msgbox.vue'
 import Userslist from '../userslist/UsersList.vue'
 export default {
@@ -191,11 +213,16 @@ export default {
     return {
       chosen: 'newestMsg',
       tabIndex: 0,
-      viewAnimate: ''
+      viewAnimate: '',
+      outline: '使用vue的transition完成滑动过渡 阅读数 5959 使用vue来做一些小巧的动画效果是非常方便的,今天本人想使用vue的transition来完成一个滑动过渡效果,.',
+      num: 10,
+      showFirstList: true,
+      currentPage: 1
     }
   },
   components: {
     List,
+    List2,
     Msgbox,
     Userslist
   },
@@ -236,7 +263,39 @@ export default {
 
       }
       this.chosen = tabName
-
+    },
+    handleCurrentChange(val) {
+      if(this.currentPage != val) {
+        this.currentPage = val
+        this.showFirstList = !this.showFirstList
+      }
+      if(val == 5) {
+        this.num = 5;
+      }else {
+        this.num = 10;
+      }
+    }
+  },
+  mounted() {
+    if(to.query.entry) {
+      this.chosen = this.$route.query.entry
+      }
+  },
+  created() {
+    var that = this
+    axios.get('api/lists')
+    .then(function(res){
+        that.lists = res.data
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  },
+  watch: {
+    '$route'(to, from) {
+      if(to.query.entry) {
+        this.handleTabsClick(to.query.entry)
+      }
     }
   }
 }
@@ -267,11 +326,13 @@ export default {
     .info-top
       display flex
       justify-content space-around
-      span
-        display block
-        font-size 13px
-        color #666
-        line-height 24px
+      div
+        cursor pointer
+        span
+          display block
+          font-size 13px
+          color #666
+          line-height 24px
     .info-line
       margin 20px auto 30px auto
       width 96%
@@ -306,6 +367,7 @@ export default {
         color #108EE9
     .newest-msg
       margin-left 15px
+      width 90%
       .newest-msg-title
         margin-top 15px
         font-size 14px
@@ -355,12 +417,10 @@ export default {
       position absolute
       left 0
       top 40px
-.slide-enter-active, .slide-leave-avtive 
-  transition all .5s
-.slide-enter 
-  transform translateX(100%)
-.slide-leave-to
-  transform translateX(-100%)
+.fade-enter-active, .fade-leave-avtive 
+    transition opacity .8s
+.fade-enter, .fade-leave-to 
+      opacity: 0
 </style>
 <style scoped>
 .slide-right-leave-active, .slide-right-enter-active, .slide-left-leave-active, .slide-left-enter-active {

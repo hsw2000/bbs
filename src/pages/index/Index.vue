@@ -22,10 +22,10 @@
           </div>
           <div class="info-right-bottom">
             <div v-if="isLoggedIn">
-              <a href="">
+              <router-link :to="{path:'/personal-center?entry=newestMsg'}">
                 新消息
                 <div class="xiaohongdian">1</div>
-              </a>
+              </router-link>
               <router-link :to="{path:'/personal-center'}">个人中心</router-link>
               <a href="" @click="handleLogout">登出</a>
             </div>
@@ -73,38 +73,59 @@
           <span class="personalcenter-title">个人中心</span>
           <ul>
             <li>
-              <router-link :to="{path:'/personal-center'}">
+              <router-link :to="{path:'/personal-center?entry=myPosts'}">
               我的帖子<xiaohongdian></xiaohongdian>
               </router-link>
-              
             </li>
             <li>
-              <router-link :to="{path:'/personal-center'}">
+              <router-link :to="{path:'/personal-center?entry=myPosts'}">
               个人信息<xiaohongdian></xiaohongdian>
               </router-link>
             </li>
-            <li><span>最新回复 <xiaohongdian></xiaohongdian></span></li>
-            <li><span>收到的赞 <xiaohongdian></xiaohongdian></span></li>
-            <li><span>粉丝列表 <xiaohongdian></xiaohongdian></span></li>
-            <li><span>关注列表 <xiaohongdian></xiaohongdian></span></li>
-            <li><span>私信信箱 <xiaohongdian></xiaohongdian></span></li>
-            <li><span>拉黑名单 <xiaohongdian></xiaohongdian></span></li>
+            <li>
+              <router-link :to="{path:'/personal-center?entry=newestMsg'}">
+              最新回复<xiaohongdian></xiaohongdian>
+              </router-link>
+            </li>
+            <li>
+              <router-link :to="{path:'/personal-center?entry=newestMsg'}">
+              收到的赞<xiaohongdian></xiaohongdian>
+              </router-link>
+            </li>
+            <li>
+              <router-link :to="{path:'/personal-center?entry=fanslist'}">
+              粉丝列表<xiaohongdian></xiaohongdian>
+              </router-link>
+            </li>
+            <li>
+              <router-link :to="{path:'/personal-center?entry=followlist'}">
+              关注列表<xiaohongdian></xiaohongdian>
+              </router-link>
+            </li>
+            <li>
+              <router-link :to="{path:'/personal-center?entry=msgBox'}">
+              私信信箱<xiaohongdian></xiaohongdian>
+              </router-link>
+            </li>
+            <li>
+              <router-link :to="{path:'/personal-center?entry=blacklist'}">
+              拉黑名单<xiaohongdian></xiaohongdian>
+              </router-link>
+            </li>
           </ul>
         </div>
-        <!-- <div class="swiper-container"> -->
-          <swiper ref="mySwiper" :options="swiperOptions">
-            <swiper-slide>
-              <div class="swiper-item">Slide 1</div>
-            </swiper-slide>
-            <swiper-slide>
-              <div class="swiper-item">Slide 2</div>
-            </swiper-slide>
-            <swiper-slide>
-              <div class="swiper-item">Slide 3</div>
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-          </swiper>
-        <!-- </div> -->
+        <swiper ref="mySwiper" :options="swiperOptions">
+          <swiper-slide>
+            <div class="swiper-item">Slide 1</div>
+          </swiper-slide>
+          <swiper-slide>
+            <div class="swiper-item">Slide 2</div>
+          </swiper-slide>
+          <swiper-slide>
+            <div class="swiper-item">Slide 3</div>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
       </div>
     </div>
   </div>
@@ -120,7 +141,7 @@ export default {
           pagination: {
             el: '.swiper-pagination'
           },
-          // Some Swiper option/callback...
+          autoplay: true
       },
       isLoggedIn: false,
       username: ''
@@ -146,7 +167,6 @@ export default {
   },
   methods: {
     handleForumClick(catagoryName) {
-      console.log(catagoryName)
       this.$router.push('/forum-home')
     },
     handleLogout() {
@@ -324,6 +344,7 @@ export default {
             font-size 14px
             line-height 37px
             color #333
+            text-decoration none
     .swiper-container
       margin-top 40px
       width 100%

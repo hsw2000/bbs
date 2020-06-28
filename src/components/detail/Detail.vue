@@ -17,12 +17,16 @@
       </div>
     </div>
     <ul class="detail-list">
-      <li class="item" v-for="i in arr" :key="i">
+      <li 
+        class="item" 
+        v-for="(item, index) in lists" 
+        :key="index"
+      >
         <div class="item-left">
           <div class="item-left-avatar">
             <img src="icons/default_avatar.svg" alt="">
           </div>
-          <div class="item-left-username">USERNAME</div>
+          <div class="item-left-username">{{item.username}}</div>
           <div class="item-left-op">
             <span>关注</span>
             <span>私信</span>
@@ -30,16 +34,23 @@
         </div>
         <div class="item-right">
           <div class="item-right-floor">
-            <span>2019-10-19 15:07:10&nbsp;&nbsp; </span>
-            <span>2楼</span>
+            <span>{{formatDate(item.time)}}&nbsp;&nbsp; </span>
+            <span>{{item.floor}}楼</span>
           </div>
           <div class="item-right-line"></div>
           <div class="item-right-main">
-            {{text}}
+            <div class="ql-container ql-snow" style="border:none;">
+                <div class="ql-editor" v-html="item.content">
+                </div>
+            </div>
+            <!-- <p class="ql-editor" v-html="item.content"></p> -->
           </div>
           <div class="item-right-op">
-            <div class="item-zan">
-              <img src="../../../public/icons/dianzan_off.svg" alt="">
+            <div 
+              class="item-zan"
+              @click="handleDianzanClick(index)"  
+            >
+              <img :src="dianzanSrc[index]" alt="">
               <span>点赞</span>
             </div>
             <div class="item-jubao">
@@ -51,30 +62,123 @@
       </li>
       
     </ul>
+    <div class="textarea item">
+      <div class="item-left">
+        <div class="item-left-avatar">
+          <img src="icons/default_avatar.svg" alt="">
+        </div>
+        <div class="item-left-username">USERNAME</div>
+      </div>
+      <div class="textarea-right">
+        <quill-editor
+            v-model="content"
+            ref="myQuillEditor"
+            :options="editorOption"
+        ></quill-editor>
+        <div class="submit" @click="handleSubmit">提交</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   props: {
     num: {
       type: Number,
-      default: 10
+      default: 10,
+      
     }
   },
   data() {
     return {
-      text: '噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n'
+      lists: [],
+      editorOption: {
+        modules: {
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike'],
+              ['code-block'],     //引用，代码块
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
+              [{ 'script': 'sub'}, { 'script': 'super' }],   // 上下标
+              [{ 'indent': '-1'}, { 'indent': '+1' }],     // 缩进
+              [{ 'direction': 'rtl' }],             // 文本方向
+              [{ 'color': [] }],     // 字体颜色，字体背景颜色
+              ['clean'],    //清除字体样式
+              ['image']    //上传图片、上传视频
+            ]
+          }
+        }
+      },
+      content: '',
+      dianzanSrc: [
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg'
+      ]
     }
   },
   computed: {
-    arr() {
-      let arr = [];
-      for(let i = 0; i < this.num; i++) {
-        arr[i] = i
-      }
-      return arr
+    editor() {
+      return this.$refs.myQuillEditor.quill
     }
+  },
+  methods: {
+    onEditorChange({ quill, html, text }) {
+      this.content = html
+    },
+    formatDate(num) {
+      return this.utils.formatDate(num)
+    },
+    handleDianzanClick(index) {
+      this.$set(this.dianzanSrc, index, this.dianzanSrc[index] == 'icons/dianzan_on.svg' ? 'icons/dianzan_off.svg' : 'icons/dianzan_on.svg')
+    },
+    handleSubmit() {
+      this.lists.push({
+        username: '您的用户名',
+        content: this.content,
+        time: String(Date.now())
+      })
+      this.content = ''
+    }
+  },
+  created() {
+    var that = this
+    axios.get('api/details')
+    .then(function(res){
+        that.lists = res.data
+        that.lists.map((item) => {
+          item.dianzanPath = 'icons/dianzan_off.svg'
+        })
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
   }
 }
 </script>
@@ -103,7 +207,7 @@ export default {
       position absolute
       right 0
       bottom 0
-      width 20px
+      width 25px
       height 20px
       img
         display inline
@@ -150,10 +254,9 @@ export default {
           border-top 1px dotted #333
           margin 3px 0
         .item-right-main
-          margin 23px 10px 0 10px
           min-height 160px
         .item-right-op
-          margin-top 5px
+          margin-top 20px
           text-align right
           .item-zan, .item-jubao
             display inline
@@ -162,5 +265,68 @@ export default {
               height 20px
           .item-zan
             margin-right 20px
-
+  .textarea
+    margin-top 30px
+    margin-bottom 200px
+    display flex
+    height 260px
+    .item-left
+      width 14%
+      padding-top 20px
+      img
+        width 100%
+      .item-left-avatar
+        margin 0 auto
+        width 55%
+        background-color pink
+        border-radius 10px
+      .item-left-username
+        margin 10px 0
+        text-align center
+        font-size 16px
+        font-weight 650
+      .item-left-op
+        text-align center
+        span
+          color #0077E5
+          font-size 12px
+          text-decoration underline
+          cursor pointer
+          &:first-child
+            margin-right 20px
+    .textarea-right
+      overflow hidden
+      margin-left 10px
+      .submit
+        float right
+        margin-top 10px
+        padding 0 30px
+        border-radius 10px
+        line-height 30px
+        width 40px
+        text-align center
+        color #333
+        background-color #a3d3ff
+        cursor pointer
+</style>
+<style>
+/*滚动条整体样式*/
+.textarea-right ::-webkit-scrollbar{
+  width: 10px;/*竖向滚动条的宽度*/
+  height: 10px;/*横向滚动条的高度*/
+}
+.textarea-right ::-webkit-scrollbar-thumb{/*滚动条里面的小方块*/
+  background: #666666;
+  border-radius: 5px;
+}
+.textarea-right ::-webkit-scrollbar-track{/*滚动条轨道的样式*/
+  background: #ccc;
+  border-radius: 5px;
+}
+.textarea-right .ql-editor{
+  height:140px;
+}
+.ql-editor{
+  height: 140px;
+}
 </style>

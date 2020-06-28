@@ -22,5 +22,17 @@ module.exports = {
         chunks: ["chunk-vendors", "chunk-common", "login"]
     }
   },
-  publicPath: process.env.NODE_ENV === 'production' ? '/projects/bbs/' : '/'
+  publicPath: process.env.NODE_ENV === 'production' ? '/projects/bbs/' : '/',
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://39.101.192.144:8080/xcx/',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
+  }
 }

@@ -25,39 +25,25 @@
         <a href="举报页面" style="position: relative;left: 93%;color:rgba(0, 180, 255, 100)">举报</a>
       </div>
       <ul id = "msgmid">
-          <li class="msgmid-left">
+          <li 
+            v-for="(item, index) in lists" 
+            :class="item.direction"
+            :key="index"
+          >
             <div class="li-inner">
-            <img src="icons/avatar.svg" alt="">
+              <img src="icons/avatar.svg" alt="" v-if="item.direction == 'msgmid-left'" />
               <div class="li-inner-msg">
-                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
-                <div>56分钟前</div>
+                <p>{{item.content}}</p>
+                <div>{{formatDate(item.time)}}</div>
               </div>
+              <img src="icons/avatar.svg" alt="" v-if="item.direction == 'msgmid-right'" />
             </div>
           </li>
-          <li class="msgmid-left">
-            <div class="li-inner">
-            <img src="icons/avatar.svg" alt="">
-              <div class="li-inner-msg">
-                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
-                <div>56分钟前</div>
-              </div>
-            </div>
-          </li>
-          <li class="msgmid-right">
-            <div class="li-inner">
-              <div class="li-inner-msg">
-                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
-                <div>56分钟前</div>
-              </div>
-              <img src="icons/avatar.svg" alt="">
-            </div>
-          </li>
-
-      </ul>
+        </ul>
       <div id = "msgbottom">
         <form>
-          <textarea id = 'message' name = 'message' rows = '10' cols = '60' placeholder="请输入私信内容"></textarea>
-          <input id = 'submit' name = 'submit' type='submit' value = '发送'>
+          <textarea id = 'message' name = 'message' rows = '10' cols = '60' placeholder="请输入私信内容" v-model="content"></textarea>
+          <input id = 'submit' name = 'submit' @click="handleSubmit" value = '发送'>
         </form>
       </div>
     </div>
@@ -67,9 +53,54 @@
 <script>
 import xiaohongdian from '../xiaohongdian/Xiaohongdian.vue'
 export default {
+  data() {
+    return {
+      lists: [
+        {
+          direction: 'msgmid-left',
+          content: '很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比',
+          time: '1593255000000'
+        },
+        {
+          direction: 'msgmid-left',
+          content: '很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比',
+          time: '1593255080000'
+        },
+        {
+          direction: 'msgmid-right',
+          content: '很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比',
+          time: '1593277000000'
+        }
+      ],
+      content: ''
+    }
+  },
   components: {
     xiaohongdian
-  }
+  },
+  methods: {
+    formatDate(str) {
+      return this.utils.formatDate(str)
+    },
+    handleSubmit() {
+      this.lists.push({
+        direction: 'msgmid-right',
+        content: this.content,
+        time: Date.now()
+      })
+      this.content = ''
+    }
+  },
+  mounted(){
+    // 聊天定位到底部
+    let ele = document.getElementById('msgmid');
+    ele.scrollTop = ele.scrollHeight;
+  },
+  updated(){
+    // 聊天定位到底部
+    let ele = document.getElementById('msgmid');
+    ele.scrollTop = ele.scrollHeight;
+  },
 }
 </script>
 
@@ -137,10 +168,11 @@ export default {
   #msgmid {
     -ms-overflow-style: none;
     overflow: -moz-scrollbars-none;
+    padding-bottom: 10px;
   }
   #msgmid li {
     width: 96%;
-    margin: 0 auto;
+    margin: 23px auto;
     overflow: hidden;
   }
   #msgmid li div.li-inner {
@@ -194,6 +226,7 @@ export default {
     height: 180px;
     width :90%;
     border: 0px;
+    font-size: 14px;
   }
   #submit{
     position: relative;
@@ -205,7 +238,9 @@ export default {
     font-family: "Microsoft Yahei";
     font-style:normal;
     font-size:10px;
+    text-align: center;
     color:#FFFFFF;
+    cursor: pointer;
   }
   #msgmid-left{
     float: left;

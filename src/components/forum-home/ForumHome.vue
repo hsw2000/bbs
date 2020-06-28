@@ -14,7 +14,7 @@
       </div>
       <div class="title-right">
         版主: 水吧老板，皮卡皮卡球
-        <a href="">快速发帖</a>
+        <a class="post-a-post" @click="postAPost">快速发帖</a>
       </div>
     </div>
     <div class="zhiding-title">
@@ -31,21 +31,121 @@
       </span>
       <span class="zhiding-tabs-center">置顶区</span>
     </div>
-    <list></list>
+    <list 
+      :num="5"
+      :list="topLists"
+    ></list>
     <div class="newest-title">最新</div>
-    <list></list>
-    <pagination></pagination>
+    <transition-group name="fade">
+      <list  
+        :num="num"
+        v-if="showFirstList" 
+        :list="newestLists"
+        key=1
+      ></list>
+      <list
+        :num="num"
+        v-if="!showFirstList"
+        :list="newestLists"
+        key=2
+      ></list>
+    </transition-group>
+    <el-pagination
+      @current-change="handleCurrentChange" 
+      class="pagination"
+      background
+      layout="prev, pager, next, jumper"
+      :total="50" 
+    ></el-pagination>
+    <el-dialog class="post-dialog" title="快速发帖" :visible.sync="dialogFormVisible">
+      <el-input
+        placeholder="贴子标题"
+        v-model="postTitle"
+        clearable>
+      </el-input>
+      <quill-editor
+            v-model="content"
+            ref="myQuillEditor"
+            :options="editorOption"
+        ></quill-editor>
+      <div 
+        class="submit" 
+        @click="handleSubmit"
+      >提交</div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import list from '../list/List.vue'
-import pagination from '../pagination/Pagination.vue'
 export default {
+  data() {
+    return {
+      num: 10,
+      showFirstList: true,
+      dialogFormVisible: false,
+      editorOption: {
+        modules: {
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike'],
+              ['code-block'],     //引用，代码块
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
+              [{ 'script': 'sub'}, { 'script': 'super' }],   // 上下标
+              [{ 'indent': '-1'}, { 'indent': '+1' }],     // 缩进
+              [{ 'direction': 'rtl' }],             // 文本方向
+              [{ 'color': [] }],     // 字体颜色，字体背景颜色
+              ['clean'],    //清除字体样式
+              ['image']    //上传图片、上传视频
+            ]
+          }
+        }
+      },
+      topLists: [],
+      newestLists: [],
+      postTitle: '',
+      content: ''
+    }
+  },
   components: {
-    list,
-    pagination
-  }
+    list
+  },
+  methods: {
+    handleCurrentChange(val) {
+      if(this.currentPage != val) {
+        this.currentPage = val
+        this.showFirstList = !this.showFirstList
+      }
+      if(val == 5) {
+        this.num = 5;
+      }else {
+        this.num = 10;
+      }
+    },
+    postAPost() {
+      this.dialogFormVisible = true;
+    },
+    handleSubmit() {
+      this.newestLists.unshift({ forum: "神技水吧", owner: "您的用户名", op: "点赞", follower: "才不是技术宅呢", time: String(Date.now()), title: "[理性讨论帖]"+this.postTitle, reply: "0", seen: "0", desc: this.content })
+      this.dialogFormVisible = false
+      this.content = ''
+      this.postTitle = ''
+      console.log(this.newestLists[0])
+      console.log(this.topLists[0])
+    }
+  },
+  created() {
+    var that = this
+    axios.get('api/lists')
+    .then(function(res){
+        that.newestLists = res.data
+        that.topLists = JSON.parse(JSON.stringify(res.data))
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  },
 }
 </script>
 
@@ -78,6 +178,8 @@ export default {
       line-height 76px
       a
         margin-left 20px
+        text-decoration underline
+        cursor pointer
   .zhiding-title
     position relative
     display flex
@@ -109,4 +211,38 @@ export default {
     text-align center
     font-size 16px
     line-height 20px
+  .pagination
+    float right
+  .post-dialog 
+    .el-dialog
+      overflow hidden
+      .el-dialog__body
+        padding 5px !important
+        .quill-editor
+          margin-top 15px
+          .ql-editor
+            height 140px
+    .submit
+      float right
+      margin-top 10px
+      padding 0 30px
+      border-radius 10px
+      line-height 30px
+      width 40px
+      text-align center
+      color #333
+      background-color #a3d3ff
+      cursor pointer
+  .fade-enter-active, .fade-leave-avtive 
+    transition opacity .8s
+  .fade-enter, .fade-leave-to 
+      opacity: 0
+</style>
+<style>
+.ql-editor {
+  height: 140px;
+}
+.el-dialog__body {
+  padding: 15px 20px !important;
+}
 </style>
