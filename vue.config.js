@@ -22,9 +22,6 @@ module.exports = {
         chunks: ["chunk-vendors", "chunk-common", "login"]
     }
   },
-<<<<<<< Updated upstream
-  publicPath: process.env.NODE_ENV === 'production' ? '/projects/bbs/' : '/'
-=======
   publicPath: process.env.NODE_ENV === 'production' ? '/projects/bbs/' : '/',
   devServer: {
     proxy: {
@@ -33,5 +30,4 @@ module.exports = {
       }
     }
   }
->>>>>>> Stashed changes
 }

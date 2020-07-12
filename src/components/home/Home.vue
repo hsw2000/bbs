@@ -4,10 +4,6 @@
       <li class="tabs-chosen">最新发表</li>
       <li>我的关注</li>
     </ul>
-<<<<<<< Updated upstream
-    <list></list>
-    <pagination></pagination>
-=======
     <transition-group name="fade" mode="in-out">
       <list 
         :list="listdata"
@@ -33,7 +29,6 @@
     <div class="loader-inner line-spin-fade-loader" >
       <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     </div>
->>>>>>> Stashed changes
   </div>
 </template>
 
@@ -49,10 +44,6 @@ export default {
   methods: {
     
   },
-<<<<<<< Updated upstream
-  computed: {
-    
-=======
   created() {
     var that = this
     axios.get('/front/tiezi/popular')
@@ -71,7 +62,6 @@ export default {
     .catch(function (error) {
         console.log(error);
     });
->>>>>>> Stashed changes
   },
   components: {
     list,
@@ -96,8 +86,6 @@ export default {
       padding 0 10px
       font-size 22px
       line-height 48px
-<<<<<<< Updated upstream
-=======
   .pagination
     float right 
   .load-inner
@@ -122,5 +110,4 @@ export default {
   width: 100px;
   height: 100px;
 }
->>>>>>> Stashed changes
 </style>

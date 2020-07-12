@@ -31,146 +31,6 @@
       <a class="modify" @click="handleModifyInfo">修改个人信息</a>
     </div>
     <div class="right">
-<<<<<<< Updated upstream
-      <ul class="tabs">
-        <li :class="{'chosen-tab': chosen == 'newestMsg'}" @click="handleTabsClick('newestMsg')">最新消息</li>
-        <li :class="{'chosen-tab': chosen == 'myPosts'}"  @click="handleTabsClick('myPosts')">我的帖子</li>
-        <li :class="{'chosen-tab': chosen == 'msgBox'}"  @click="handleTabsClick('msgBox')">私信信箱</li>
-        <li :class="{'chosen-tab': chosen == 'blacklist'}"  @click="handleTabsClick('blacklist')">黑名单</li>
-        <li :class="{'chosen-tab': chosen == 'followlist'}"  @click="handleTabsClick('followlist')">关注列表</li>
-        <li :class="{'chosen-tab': chosen == 'fanslist'}"  @click="handleTabsClick('fanslist')">粉丝列表</li>
-      </ul>
-      <transition-group :name="viewAnimate">
-        <div class="newest-msg" v-if="chosen == 'newestMsg'" key=1>
-          <div class="newest-msg-title">最新回复</div>
-          <ul>
-            <li>
-              <div class="newest-msg-avatar">
-                <img src="icons/avatar.svg" alt="">
-              </div>
-              <div class="newest-msg-main">
-                <span class="newest-msg-username">成电老司机
-                  <span class="newest-msg-zan">赞了你的回复</span>
-                </span>
-                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-              </div>
-              <div class="newest-msg-time">
-                2020.5.21 16:30
-              </div>
-            </li>
-            <li>
-              <div class="newest-msg-avatar">
-                <img src="icons/avatar.svg" alt="">
-              </div>
-              <div class="newest-msg-main">
-                <span class="newest-msg-username">成电老司机
-                  <span class="newest-msg-zan">赞了你的回复</span>
-                </span>
-                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-              </div>
-              <div class="newest-msg-time">
-                2020.5.21 16:30
-              </div>
-            </li>
-            <li>
-              <div class="newest-msg-avatar">
-                <img src="icons/avatar.svg" alt="">
-              </div>
-              <div class="newest-msg-main">
-                <span class="newest-msg-username">成电老司机
-                  <span class="newest-msg-zan">赞了你的回复</span>
-                </span>
-                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-              </div>
-              <div class="newest-msg-time">
-                2020.5.21 16:30
-              </div>
-            </li>
-            <li>
-              <div class="newest-msg-avatar">
-                <img src="icons/avatar.svg" alt="">
-              </div>
-              <div class="newest-msg-main">
-                <span class="newest-msg-username">成电老司机
-                  <span class="newest-msg-zan">赞了你的回复</span>
-                </span>
-                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-              </div>
-              <div class="newest-msg-time">
-                2020.5.21 16:30
-              </div>
-            </li>
-          </ul>
-          <div class="see-more">查看更多</div>
-          <div class="newest-msg-title">最新点赞</div>
-          <ul>
-            <li>
-              <div class="newest-msg-avatar">
-                <img src="icons/avatar.svg" alt="">
-              </div>
-              <div class="newest-msg-main">
-                <span class="newest-msg-username">成电老司机
-                  <span class="newest-msg-zan">赞了你的回复</span>
-                </span>
-                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-              </div>
-              <div class="newest-msg-time">
-                2020.5.21 16:30
-              </div>
-            </li>
-            <li>
-              <div class="newest-msg-avatar">
-                <img src="icons/avatar.svg" alt="">
-              </div>
-              <div class="newest-msg-main">
-                <span class="newest-msg-username">成电老司机
-                  <span class="newest-msg-zan">赞了你的回复</span>
-                </span>
-                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-              </div>
-              <div class="newest-msg-time">
-                2020.5.21 16:30
-              </div>
-            </li>
-            <li>
-              <div class="newest-msg-avatar">
-                <img src="icons/avatar.svg" alt="">
-              </div>
-              <div class="newest-msg-main">
-                <span class="newest-msg-username">成电老司机
-                  <span class="newest-msg-zan">赞了你的回复</span>
-                </span>
-                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-              </div>
-              <div class="newest-msg-time">
-                2020.5.21 16:30
-              </div>
-            </li>
-            <li>
-              <div class="newest-msg-avatar">
-                <img src="icons/avatar.svg" alt="">
-              </div>
-              <div class="newest-msg-main">
-                <span class="newest-msg-username">成电老司机
-                  <span class="newest-msg-zan">赞了你的回复</span>
-                </span>
-                <span class="newest-msg-content"><span>同学你这个代码有问题呀，你看第XXXX行的XXX不应该是XXXXXX，应该是XXXXXXX，你改一下看看对不对</span></span>
-              </div>
-              <div class="newest-msg-time">
-                2020.5.21 16:30
-              </div>
-            </li>
-          </ul>
-          <div class="see-more">查看更多</div>
-        </div>
-        <div class="my-posts" v-if="chosen == 'myPosts'" key=2>
-          <list></list>
-        </div>
-        <msgbox v-if="chosen == 'msgBox'" key=3>
-
-        </msgbox>
-        <userslist title="拉黑列表" class="blacklist"  v-if="chosen == 'blacklist'" key=4>
-=======
       <div class="functions" v-show="showFunctions">
           <ul class="tabs">
           <li :class="{'chosen-tab': chosen == 'newestMsg'}" @click="handleTabsClick('newestMsg')">最新消息</li>
@@ -220,7 +80,6 @@
             ></el-pagination>
           </div>
           <msgbox class="msgbox" v-if="chosen == 'msgBox'" key=3>
->>>>>>> Stashed changes
 
           </msgbox>
           <userslist 
@@ -340,9 +199,6 @@ export default {
     return {
       chosen: 'newestMsg',
       tabIndex: 0,
-<<<<<<< Updated upstream
-      viewAnimate: ''
-=======
       viewAnimate: '',
       outline: '使用vue的transition完成滑动过渡 阅读数 5959 使用vue来做一些小巧的动画效果是非常方便的,今天本人想使用vue的transition来完成一个滑动过渡效果,.',
       num: 10,
@@ -363,7 +219,6 @@ export default {
       fileList: [],
       modifyParams: '',
       avatarSrc: ''
->>>>>>> Stashed changes
     }
   },
   components: {
@@ -408,9 +263,6 @@ export default {
 
       }
       this.chosen = tabName
-<<<<<<< Updated upstream
-
-=======
     },
     handleCurrentChange(val) {
       if(this.currentPage != val) {
@@ -496,7 +348,6 @@ export default {
         }else
           this.showFunctions = false
       }
->>>>>>> Stashed changes
     }
   }
 }

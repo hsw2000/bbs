@@ -33,10 +33,6 @@
     </div>
     <list></list>
     <div class="newest-title">最新</div>
-<<<<<<< Updated upstream
-    <list></list>
-    <pagination></pagination>
-=======
     <transition-group name="fade">
       <list  
         :num="num"
@@ -76,7 +72,6 @@
         <span>提交</span>
       </div>
     </el-dialog>
->>>>>>> Stashed changes
   </div>
 </template>
 
@@ -85,11 +80,6 @@ import list from '../list/List.vue'
 import pagination from '../pagination/Pagination.vue'
 export default {
   components: {
-<<<<<<< Updated upstream
-    list,
-    pagination
-  }
-=======
     list
   },
   methods: {
@@ -128,7 +118,6 @@ export default {
         console.log(error);
     });
   },
->>>>>>> Stashed changes
 }
 </script>
 
@@ -192,8 +181,6 @@ export default {
     text-align center
     font-size 16px
     line-height 20px
-<<<<<<< Updated upstream
-=======
   .pagination
     float right
   .post-dialog
@@ -229,5 +216,4 @@ export default {
 .el-dialog__body {
   padding: 15px 20px;
 }
->>>>>>> Stashed changes
 </style>
