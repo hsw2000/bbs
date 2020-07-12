@@ -22,7 +22,17 @@
           </div>
           <div class="info-right-bottom">
             <div v-if="isLoggedIn">
-              <router-link :to="{path:'/personal-center'}">
+<<<<<<< Updated upstream
+              <a href="">
+                新消息
+                <div class="xiaohongdian">1</div>
+              </a>
+              <router-link :to="{path:'/personal-center'}">个人中心</router-link>
+              <a href="" @click="handleLogout">登出</a>
+=======
+              <router-link 
+                :to="{path:'/personal-center?entry=newestMsg'}"
+              >
                 新消息
                 <div class="xiaohongdian">1</div>
               </router-link>
@@ -30,6 +40,7 @@
                 :to="{path:'/personal-center'}"
               >个人中心</router-link>
               <a  @click="handleLogout">登出</a>
+>>>>>>> Stashed changes
             </div>
             <div v-else>
               <a @click="handleLogin">
@@ -53,6 +64,44 @@
             <router-view />
           </transition>
         </div>
+<<<<<<< Updated upstream
+        <div class="personalcenter">
+          <span class="personalcenter-title">个人中心</span>
+          <ul>
+            <li>
+              <router-link :to="{path:'/personal-center'}">
+              我的帖子<xiaohongdian></xiaohongdian>
+              </router-link>
+              
+            </li>
+            <li>
+              <router-link :to="{path:'/personal-center'}">
+              个人信息<xiaohongdian></xiaohongdian>
+              </router-link>
+            </li>
+            <li><span>最新回复 <xiaohongdian></xiaohongdian></span></li>
+            <li><span>收到的赞 <xiaohongdian></xiaohongdian></span></li>
+            <li><span>粉丝列表 <xiaohongdian></xiaohongdian></span></li>
+            <li><span>关注列表 <xiaohongdian></xiaohongdian></span></li>
+            <li><span>私信信箱 <xiaohongdian></xiaohongdian></span></li>
+            <li><span>拉黑名单 <xiaohongdian></xiaohongdian></span></li>
+          </ul>
+        </div>
+        <!-- <div class="swiper-container"> -->
+          <swiper ref="mySwiper" :options="swiperOptions">
+            <swiper-slide>
+              <div class="swiper-item">Slide 1</div>
+            </swiper-slide>
+            <swiper-slide>
+              <div class="swiper-item">Slide 2</div>
+            </swiper-slide>
+            <swiper-slide>
+              <div class="swiper-item">Slide 3</div>
+            </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
+          </swiper>
+        <!-- </div> -->
+=======
         <div class="body-right">
           <div class="search">
             <div class="search-input">
@@ -130,6 +179,7 @@
             <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
         </div>
+>>>>>>> Stashed changes
       </div>
       <transition name="slide">
         <login 

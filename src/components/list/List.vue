@@ -1,5 +1,30 @@
 <template>
   <ul class="list">
+<<<<<<< Updated upstream
+    
+    <li
+      @click="handleLiClick" 
+      class="list-item"
+      v-for="i in arr"
+      :key = i  
+    >
+      <div class="list-item-left">【神技水吧】</div>
+      <div class="list-item-mid">
+        <span class="list-item-mid-top">[理性讨论帖]什么是最好的编程语言？我投PHP一票，其他编程语言都是异端</span>
+        <span class="list-item-mid-bottom">我点名了 python是坏东西!!(￣ε(#￣)☆╰╮(￣▽￣///) 大家来battle呀 要陈述理由哦 不可以随意灌水</span>
+      </div>
+      
+      <div class="list-item-right">
+        <div class="list-item-right-top">
+          <img class="icon" src="icons/eye.svg">
+          <span class="icon-num-left">1234</span>
+          <img class="icon" src="icons/message.svg">
+          <span class="icon-num">567</span>
+        </div>
+        <div class="list-item-right-bottom">
+          <span class="owner">科技动向看板娘</span>
+          <span class="time">今天10:56</span>
+=======
       <li
         class="list-item"
         v-for="(item) in list.slice(0, num)"
@@ -25,8 +50,9 @@
             <span class="owner">{{item.author}}</span>
             <span class="time">{{formatDate(item.time)}}</span>
           </div>
+>>>>>>> Stashed changes
         </div>
-      
+      </div>
       <div class="list-item-midright">
         您关注的<span>才不是技术宅呢</span>点赞过
       </div>
@@ -53,6 +79,10 @@ export default {
     }
   },
   methods: {
+<<<<<<< Updated upstream
+    handleLiClick() {
+      this.$router.push('/detail')
+=======
     handleLiClick(tid) {
       this.$router.push({
         path: '/detail',
@@ -68,6 +98,7 @@ export default {
     formatDesc(str) {
       str = str || ''
       return str.replace(/<\/?.+?>/g,"");
+>>>>>>> Stashed changes
     }
   }
 }

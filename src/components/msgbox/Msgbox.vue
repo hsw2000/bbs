@@ -18,11 +18,33 @@
         <a href="举报页面" style="position: relative;left: 93%;color:rgba(0, 180, 255, 100)">举报</a>
       </div>
       <ul id = "msgmid">
+<<<<<<< Updated upstream
+          <li class="msgmid-left">
+            <div class="li-inner">
+            <img src="icons/avatar.svg" alt="">
+              <div class="li-inner-msg">
+                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
+                <div>56分钟前</div>
+              </div>
+            </div>
+          </li>
+          <li class="msgmid-left">
+            <div class="li-inner">
+            <img src="icons/avatar.svg" alt="">
+              <div class="li-inner-msg">
+                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
+                <div>56分钟前</div>
+              </div>
+            </div>
+          </li>
+          <li class="msgmid-right">
+=======
           <li 
             v-for="(item, index) in msglist" 
             :class="item.direction"
             :key="index"
           >
+>>>>>>> Stashed changes
             <div class="li-inner">
               <div class="li-inner-msg">
                 <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
@@ -47,6 +69,11 @@
 import xiaohongdian from '../xiaohongdian/Xiaohongdian.vue'
 import axios from 'axios'
 export default {
+<<<<<<< Updated upstream
+  components: {
+    xiaohongdian
+  }
+=======
   data() {
     return {
       list: [],
@@ -104,6 +131,7 @@ export default {
     let ele = document.getElementById('msgmid');
     ele.scrollTop = ele.scrollHeight;
   },
+>>>>>>> Stashed changes
 }
 </script>
 

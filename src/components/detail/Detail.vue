@@ -22,7 +22,11 @@
           <div class="item-left-avatar">
             <img :src="item.imgurl" alt="">
           </div>
+<<<<<<< Updated upstream
+          <div class="item-left-username">USERNAME</div>
+=======
           <div class="item-left-username">{{item.author}}</div>
+>>>>>>> Stashed changes
           <div class="item-left-op">
             <span>关注</span>
             <span>私信</span>
@@ -35,10 +39,14 @@
           </div>
           <div class="item-right-line"></div>
           <div class="item-right-main">
+<<<<<<< Updated upstream
+            {{text}}
+=======
             <div class="ql-container ql-snow" style="border:none;">
                 <div class="ql-editor" v-html="item.content">
                 </div>
             </div>
+>>>>>>> Stashed changes
           </div>
           <div class="item-right-op">
             <div class="item-zan">
@@ -54,6 +62,8 @@
       </li>
       
     </ul>
+<<<<<<< Updated upstream
+=======
     <div class="textarea item" v-show="!showLoading">
       <div class="item-left">
         <div class="item-left-avatar">
@@ -70,6 +80,7 @@
         <div class="submit" @click="handleSubmit">提交</div>
       </div>
     </div>
+>>>>>>> Stashed changes
   </div>
 </template>
 
@@ -78,11 +89,18 @@ export default {
   props: {
     num: {
       type: Number,
+<<<<<<< Updated upstream
+      default: 10
+=======
       default: 10,
+>>>>>>> Stashed changes
     }
   },
   data() {
     return {
+<<<<<<< Updated upstream
+      text: '噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n'
+=======
       lists: [],
       editorOption: {
         modules: {
@@ -133,6 +151,7 @@ export default {
       showLoading: true,
       title: '',
       total: 0
+>>>>>>> Stashed changes
     }
   },
   computed: {
@@ -143,6 +162,8 @@ export default {
       }
       return arr
     }
+<<<<<<< Updated upstream
+=======
   },
   methods: {
     onEditorChange({ quill, html, text }) {
@@ -198,6 +219,7 @@ export default {
         console.log(error);
     });
 
+>>>>>>> Stashed changes
   }
 }
 </script>
@@ -285,6 +307,9 @@ export default {
               height 20px
           .item-zan
             margin-right 20px
+<<<<<<< Updated upstream
+
+=======
   .textarea
     margin-top 30px
     margin-bottom 200px
@@ -350,4 +375,5 @@ export default {
 .ql-editor{
   height: 140px;
 }
+>>>>>>> Stashed changes
 </style>
