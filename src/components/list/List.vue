@@ -1,5 +1,6 @@
 <template>
   <ul class="list">
+<<<<<<< Updated upstream
     
     <li
       @click="handleLiClick" 
@@ -23,6 +24,33 @@
         <div class="list-item-right-bottom">
           <span class="owner">科技动向看板娘</span>
           <span class="time">今天10:56</span>
+=======
+      <li
+        class="list-item"
+        v-for="(item) in list.slice(0, num)"
+        :key="item.tid"
+        @click="handleLiClick(item.tid)"
+      >
+        <div class="list-item-left">【{{item.forum}}】</div>
+        <div class="list-item-mid">
+          <span class="list-item-mid-top">{{item.title}}</span>
+          <span class="list-item-mid-bottom">{{formatDesc(item.desc)}}</span>
+        </div>
+        <div class="list-item-midright" v-if="showFollow">
+          您关注的<span>{{item.follower}}</span>{{item.op}}过
+        </div>
+        <div class="list-item-right">
+          <div class="list-item-right-top">
+            <img class="icon" src="icons/eye.svg">
+            <span class="icon-num-left">{{item.viewnum}}</span>
+            <img class="icon" src="icons/message.svg">
+            <span class="icon-num">{{item.replynum}}</span>
+          </div>
+          <div class="list-item-right-bottom">
+            <span class="owner">{{item.author}}</span>
+            <span class="time">{{formatDate(item.time)}}</span>
+          </div>
+>>>>>>> Stashed changes
         </div>
       </div>
       <div class="list-item-midright">
@@ -51,8 +79,26 @@ export default {
     }
   },
   methods: {
+<<<<<<< Updated upstream
     handleLiClick() {
       this.$router.push('/detail')
+=======
+    handleLiClick(tid) {
+      this.$router.push({
+        path: '/detail',
+        query: {
+          tid: tid
+        }
+      })
+    },
+    formatDate(num) {
+      num = num || Date.now()
+      return this.utils.formatDate(num)
+    },
+    formatDesc(str) {
+      str = str || ''
+      return str.replace(/<\/?.+?>/g,"");
+>>>>>>> Stashed changes
     }
   }
 }

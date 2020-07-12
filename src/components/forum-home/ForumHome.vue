@@ -33,8 +33,50 @@
     </div>
     <list></list>
     <div class="newest-title">最新</div>
+<<<<<<< Updated upstream
     <list></list>
     <pagination></pagination>
+=======
+    <transition-group name="fade">
+      <list  
+        :num="num"
+        v-if="showFirstList" 
+        :list="newestLists"
+        key=1
+      ></list>
+      <list
+        :num="num"
+        v-if="!showFirstList"
+        :list="newestLists"
+        key=2
+      ></list>
+    </transition-group>
+    <el-pagination
+      @current-change="handleCurrentChange" 
+      class="pagination"
+      background
+      layout="prev, pager, next, jumper"
+      :total="50" 
+    ></el-pagination>
+    <el-dialog class="post-dialog" title="快速发帖" :visible.sync="dialogFormVisible">
+      <el-input
+        placeholder="贴子标题"
+        v-model="postTitle"
+        clearable>
+      </el-input>
+      <quill-editor
+            v-model="content"
+            ref="myQuillEditor"
+            :options="editorOption"
+        ></quill-editor>
+      <div 
+        class="submit" 
+        @click="handleSubmit"
+      >
+        <span>提交</span>
+      </div>
+    </el-dialog>
+>>>>>>> Stashed changes
   </div>
 </template>
 
@@ -43,9 +85,50 @@ import list from '../list/List.vue'
 import pagination from '../pagination/Pagination.vue'
 export default {
   components: {
+<<<<<<< Updated upstream
     list,
     pagination
   }
+=======
+    list
+  },
+  methods: {
+    handleCurrentChange(val) {
+      if(this.currentPage != val) {
+        this.currentPage = val
+        this.showFirstList = !this.showFirstList
+      }
+      if(val == 5) {
+        this.num = 5;
+      }else {
+        this.num = 10;
+      }
+    },
+    postAPost() {
+      this.dialogFormVisible = true;
+    },
+    handleSubmit() {
+      this.newestLists.unshift({ forum: "神技水吧", owner: "您的用户名", op: "点赞", follower: "才不是技术宅呢", time: String(Date.now()), title: "[理性讨论帖]"+this.postTitle, reply: "0", seen: "0", desc: this.content })
+      this.dialogFormVisible = false
+      this.content = ''
+      this.postTitle = ''
+      console.log(this.newestLists[0])
+      console.log(this.topLists[0])
+    }
+  },
+  created() {
+    var that = this
+    axios.post('/front/tiezi/list', {
+      "bid":"",
+	    "page":""
+    }).then(function(res){
+        that.newestLists = res.data.data.tiezi
+        that.topLists = JSON.parse(JSON.stringify(res.data))
+    }).catch(function (error) {
+        console.log(error);
+    });
+  },
+>>>>>>> Stashed changes
 }
 </script>
 
@@ -109,4 +192,42 @@ export default {
     text-align center
     font-size 16px
     line-height 20px
+<<<<<<< Updated upstream
+=======
+  .pagination
+    float right
+  .post-dialog
+    .submit
+      position relative
+      margin-top 10px
+      height 10px  
+      span
+        position absolute
+        right 0
+        top 0
+        padding 0 30px
+        border-radius 10px
+        line-height 30px
+        width 40px
+        text-align center
+        color #333
+        background-color #a3d3ff
+        cursor pointer
+  .fade-enter-active, .fade-leave-avtive 
+    transition opacity .8s
+  .fade-enter, .fade-leave-to 
+      opacity: 0
+</style>
+<style>
+
+.post-dialog .ql-editor {
+  height: 140px;
+}
+.post-dialog .quill-editor {
+  margin-top: 15px;
+}
+.el-dialog__body {
+  padding: 15px 20px;
+}
+>>>>>>> Stashed changes
 </style>

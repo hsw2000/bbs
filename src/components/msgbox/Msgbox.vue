@@ -3,19 +3,12 @@
     <div class="msgbox-left">
       <div class="msgbox-left-title">最近私信</div>
       <ul>
-        <li>
+        <li v-for="(item, index) in list" :key="index">
           <div class="msgbox-left-imgwrapper">
-            <img src="icons/avatar.svg" alt="">
+            <img :src="item.imgurl" alt="">
             <xiaohongdian :width="25" :fontsize="12"></xiaohongdian>
           </div>
-          <div class="msgbox-left-username" >USERNAME</div>
-        </li>
-        <li>
-          <div class="msgbox-left-imgwrapper">
-            <img src="icons/avatar.svg" alt="">
-            <xiaohongdian :width="25" :fontsize="12"></xiaohongdian>
-          </div>
-          <div class="msgbox-left-username" >USERNAME</div>
+          <div class="msgbox-left-username" >{{item.username}}</div>
         </li>
       </ul>
     </div>
@@ -25,6 +18,7 @@
         <a href="举报页面" style="position: relative;left: 93%;color:rgba(0, 180, 255, 100)">举报</a>
       </div>
       <ul id = "msgmid">
+<<<<<<< Updated upstream
           <li class="msgmid-left">
             <div class="li-inner">
             <img src="icons/avatar.svg" alt="">
@@ -44,6 +38,13 @@
             </div>
           </li>
           <li class="msgmid-right">
+=======
+          <li 
+            v-for="(item, index) in msglist" 
+            :class="item.direction"
+            :key="index"
+          >
+>>>>>>> Stashed changes
             <div class="li-inner">
               <div class="li-inner-msg">
                 <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
@@ -66,10 +67,71 @@
 
 <script>
 import xiaohongdian from '../xiaohongdian/Xiaohongdian.vue'
+import axios from 'axios'
 export default {
+<<<<<<< Updated upstream
   components: {
     xiaohongdian
   }
+=======
+  data() {
+    return {
+      list: [],
+      msglist: [],
+      content: ''
+    }
+  },
+  components: {
+    xiaohongdian
+  },
+  methods: {
+    formatDate(str) {
+      return this.utils.formatDate(str)
+    },
+    handleSubmit() {
+      this.lists.push({
+        direction: 'msgmid-right',
+        content: this.content,
+        time: Date.now()
+      })
+      this.content = ''
+    }
+  },
+  mounted(){
+    // 聊天定位到底部
+    let ele = document.getElementById('msgmid');
+    ele.scrollTop = ele.scrollHeight;
+  },
+  created() {
+    var that = this
+    axios.get('/front/user/msglist')
+    .then(function(res){
+      console.log(res.data.data.msglist)
+      that.list = res.data.data.msglist
+      axios.post('    /front/user/getmsg', {
+        username: that.list[0].username
+      }).then(function(res){
+        console.log(res.data.data.message)
+
+          that.list = res.data.data.message
+          console.log()
+      }).catch(function (error) {
+          console.log(error);
+      });
+
+    }).catch(function (error) {
+        console.log(error);
+    });
+    
+
+
+  },
+  updated(){
+    // 聊天定位到底部
+    let ele = document.getElementById('msgmid');
+    ele.scrollTop = ele.scrollHeight;
+  },
+>>>>>>> Stashed changes
 }
 </script>
 
@@ -129,6 +191,7 @@ export default {
     border: 1px solid #BDBDBD;
     border-top: none;
     overflow:scroll;
+    scroll-behavior:smooth;
   }
   #msgmid::-webkit-scrollbar {
     width: 0 !important ;
@@ -156,11 +219,16 @@ export default {
 
   }
   #msgmid li img {
+    display: block;
     position: relative;
     top: 17px;
+    flex: none;
     width: 50px;
     height: 50px;
     border-radius: 50%;
+  }
+  #msgmid li div.li-inner-msg {
+    flex: initial;
   }
   #msgmid li div.li-inner-msg div{
     margin: 0 17px;

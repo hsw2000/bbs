@@ -41,6 +41,7 @@ body{
     color: #000;
     margin: auto;
     font-size: 0.75em;
+    overflow-x: hidden;
 }
 
 nav{

@@ -1,13 +1,13 @@
 <template>
   <div class="detail">
     <div class="title">
-      <div class="title-big">[理性讨论帖]什么是最好的编程语言？我投PHP一票，其他编程语言都是异端</div>
+      <div class="title-big">{{title}}</div>
       <div class="title-vice">
         <span class="title-vice-left">
           查看：
           <span class="title-vice-number">4517</span>
            |  回复：
-           <span class="title-vice-number">145</span>
+           <span class="title-vice-number">{{total}}</span>
         </span>
         <span class="title-vice-time">2019-10-19 15:07:10 </span>
       </div>
@@ -20,9 +20,13 @@
       <li class="item" v-for="i in arr" :key="i">
         <div class="item-left">
           <div class="item-left-avatar">
-            <img src="icons/default_avatar.svg" alt="">
+            <img :src="item.imgurl" alt="">
           </div>
+<<<<<<< Updated upstream
           <div class="item-left-username">USERNAME</div>
+=======
+          <div class="item-left-username">{{item.author}}</div>
+>>>>>>> Stashed changes
           <div class="item-left-op">
             <span>关注</span>
             <span>私信</span>
@@ -35,7 +39,14 @@
           </div>
           <div class="item-right-line"></div>
           <div class="item-right-main">
+<<<<<<< Updated upstream
             {{text}}
+=======
+            <div class="ql-container ql-snow" style="border:none;">
+                <div class="ql-editor" v-html="item.content">
+                </div>
+            </div>
+>>>>>>> Stashed changes
           </div>
           <div class="item-right-op">
             <div class="item-zan">
@@ -51,6 +62,25 @@
       </li>
       
     </ul>
+<<<<<<< Updated upstream
+=======
+    <div class="textarea item" v-show="!showLoading">
+      <div class="item-left">
+        <div class="item-left-avatar">
+          <img src="icons/default_avatar.svg" alt="">
+        </div>
+        <div class="item-left-username">USERNAME</div>
+      </div>
+      <div class="textarea-right">
+        <quill-editor
+            v-model="content"
+            ref="myQuillEditor"
+            :options="editorOption"
+        ></quill-editor>
+        <div class="submit" @click="handleSubmit">提交</div>
+      </div>
+    </div>
+>>>>>>> Stashed changes
   </div>
 </template>
 
@@ -59,12 +89,69 @@ export default {
   props: {
     num: {
       type: Number,
+<<<<<<< Updated upstream
       default: 10
+=======
+      default: 10,
+>>>>>>> Stashed changes
     }
   },
   data() {
     return {
+<<<<<<< Updated upstream
       text: '噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n噫嘘唏，危乎高哉，蜀道之难难于上青天，灿从及预付，开过和茫然，二来四万八千岁，不与秦赛同仁眼。西当太白有鸟道，可以横绝恶没电。\n'
+=======
+      lists: [],
+      editorOption: {
+        modules: {
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike'],
+              ['code-block'],     //引用，代码块
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
+              [{ 'script': 'sub'}, { 'script': 'super' }],   // 上下标
+              [{ 'indent': '-1'}, { 'indent': '+1' }],     // 缩进
+              [{ 'direction': 'rtl' }],             // 文本方向
+              [{ 'color': [] }],     // 字体颜色，字体背景颜色
+              ['clean'],    //清除字体样式
+              ['image']    //上传图片、上传视频
+            ]
+          }
+        }
+      },
+      content: '',
+      dianzanSrc: [
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg',
+        'icons/dianzan_off.svg'
+      ],
+      showLoading: true,
+      title: '',
+      total: 0
+>>>>>>> Stashed changes
     }
   },
   computed: {
@@ -75,6 +162,64 @@ export default {
       }
       return arr
     }
+<<<<<<< Updated upstream
+=======
+  },
+  methods: {
+    onEditorChange({ quill, html, text }) {
+      this.content = html
+    },
+    formatDate(num) {
+      return this.utils.formatDate(num)
+    },
+    handleDianzanClick(index) {
+      this.$set(this.dianzanSrc, index, this.dianzanSrc[index] == 'icons/dianzan_on.svg' ? 'icons/dianzan_off.svg' : 'icons/dianzan_on.svg')
+    },
+    handleSubmit() {
+      axios.post('/front/tiezi/view', {
+        "tid": "",
+        "content":this.content
+      }).then(function(res){
+          that.title = res.data.data.title
+          that.total = res.data.data.total
+          that.lists = res.data.data.reply
+          // that.lists.map((item) => {
+          //   item.dianzanPath = 'icons/dianzan_off.svg'
+          // })
+          that.showLoading = false
+
+      }).catch(function (error) {
+          console.log(error);
+      });
+      // 更新视图
+      this.lists.push({
+        username: '您的用户名',
+        content: this.content,
+        time: String(Date.now())
+      })
+      this.content = ''
+    }
+  },
+  created() {
+    var that = this
+    axios.post('/front/tiezi/view', {
+      "tid": this.$route.query.tid,
+      "page": 0
+    }).then(function(res){
+      console.log(res)
+        that.title = res.data.data.title
+        that.total = res.data.data.total
+        that.lists = res.data.data.reply
+        // that.lists.map((item) => {
+        //   item.dianzanPath = 'icons/dianzan_off.svg'
+        // })
+        that.showLoading = false
+
+    }).catch(function (error) {
+        console.log(error);
+    });
+
+>>>>>>> Stashed changes
   }
 }
 </script>
@@ -162,5 +307,73 @@ export default {
               height 20px
           .item-zan
             margin-right 20px
+<<<<<<< Updated upstream
 
+=======
+  .textarea
+    margin-top 30px
+    margin-bottom 200px
+    display flex
+    height 260px
+    .item-left
+      width 14%
+      padding-top 20px
+      img
+        width 100%
+      .item-left-avatar
+        margin 0 auto
+        width 55%
+        background-color pink
+        border-radius 10px
+      .item-left-username
+        margin 10px 0
+        text-align center
+        font-size 16px
+        font-weight 650
+      .item-left-op
+        text-align center
+        span
+          color #0077E5
+          font-size 12px
+          text-decoration underline
+          cursor pointer
+          &:first-child
+            margin-right 20px
+    .textarea-right
+      overflow hidden
+      margin-left 20px
+      width 81%
+      .submit
+        float right
+        margin-top 10px
+        padding 0 30px
+        border-radius 10px
+        line-height 30px
+        width 40px
+        text-align center
+        color #333
+        background-color #a3d3ff
+        cursor pointer
+</style>
+<style>
+/*滚动条整体样式*/
+.textarea-right ::-webkit-scrollbar{
+  width: 10px;/*竖向滚动条的宽度*/
+  height: 10px;/*横向滚动条的高度*/
+}
+.textarea-right ::-webkit-scrollbar-thumb{/*滚动条里面的小方块*/
+  background: #666666;
+  border-radius: 5px;
+}
+.textarea-right ::-webkit-scrollbar-track{/*滚动条轨道的样式*/
+  background: #ccc;
+  border-radius: 5px;
+}
+.textarea-right .ql-editor{
+  height:140px;
+}
+.ql-editor{
+  height: 140px;
+}
+>>>>>>> Stashed changes
 </style>

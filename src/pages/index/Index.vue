@@ -18,19 +18,32 @@
         </div>
         <div class="info-right">
           <div class="info-right-top">
-            成电小清新
+            {{username}}
           </div>
           <div class="info-right-bottom">
             <div v-if="isLoggedIn">
+<<<<<<< Updated upstream
               <a href="">
                 新消息
                 <div class="xiaohongdian">1</div>
               </a>
               <router-link :to="{path:'/personal-center'}">个人中心</router-link>
               <a href="" @click="handleLogout">登出</a>
+=======
+              <router-link 
+                :to="{path:'/personal-center?entry=newestMsg'}"
+              >
+                新消息
+                <div class="xiaohongdian">1</div>
+              </router-link>
+              <router-link 
+                :to="{path:'/personal-center'}"
+              >个人中心</router-link>
+              <a  @click="handleLogout">登出</a>
+>>>>>>> Stashed changes
             </div>
             <div v-else>
-              <a href="/projects/bbs/login.html">
+              <a @click="handleLogin">
                 登录
               </a>
             </div>
@@ -44,31 +57,14 @@
       首页
       </router-link>
     </div>
-    <div class="body">
-      <div class="body-left">
-        <transition name="fade">
-          <router-view />
-        </transition>
-      </div>
-      <div class="body-right">
-        <div class="search">
-          <div class="search-input">
-            <input type="text" placeholder="搜索帖子">
-          </div>
-          <div class="submit-search">搜索</div>
+    <div class="login-container">
+      <div class="body">
+        <div class="body-left">
+          <transition name="fade">
+            <router-view />
+          </transition>
         </div>
-        <div class="forum-catagory">
-          <span>板块分类</span>
-          <ul>
-            <li 
-              v-for="(cname, index) in forumcatagory"
-              @click="handleForumClick(cname)"
-              :key=index
-            >
-              {{cname}}
-            </li>
-          </ul>
-        </div>
+<<<<<<< Updated upstream
         <div class="personalcenter">
           <span class="personalcenter-title">个人中心</span>
           <ul>
@@ -105,13 +101,102 @@
             <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
         <!-- </div> -->
+=======
+        <div class="body-right">
+          <div class="search">
+            <div class="search-input">
+              <input type="text" placeholder="搜索帖子">
+            </div>
+            <div class="submit-search">搜索</div>
+          </div>
+          <div class="forum-catagory">
+            <span>板块分类</span>
+            <ul>
+              <li 
+                v-for="(cname, index) in forumcatagory"
+                @click="handleForumClick(cname)"
+                :key=index
+              >
+                {{cname}}
+              </li>
+            </ul>
+          </div>
+          <div class="personalcenter">
+            <span class="personalcenter-title">个人中心</span>
+            <ul>
+              <li>
+                <router-link :to="{path:'/personal-center?entry=myPosts'}">
+                我的帖子<xiaohongdian></xiaohongdian>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{path:'/personal-center?entry=myInfo'}">
+                个人信息<xiaohongdian></xiaohongdian>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{path:'/personal-center?entry=newestMsg'}">
+                最新回复<xiaohongdian></xiaohongdian>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{path:'/personal-center?entry=newestMsg'}">
+                收到的赞<xiaohongdian></xiaohongdian>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{path:'/personal-center?entry=fanslist'}">
+                粉丝列表<xiaohongdian></xiaohongdian>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{path:'/personal-center?entry=followlist'}">
+                关注列表<xiaohongdian></xiaohongdian>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{path:'/personal-center?entry=msgBox'}">
+                私信信箱<xiaohongdian></xiaohongdian>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{path:'/personal-center?entry=blacklist'}">
+                拉黑名单<xiaohongdian></xiaohongdian>
+                </router-link>
+              </li>
+            </ul>
+          </div>
+          <swiper ref="mySwiper" :options="swiperOptions">
+            <swiper-slide>
+              <div class="swiper-item">Slide 1</div>
+            </swiper-slide>
+            <swiper-slide>
+              <div class="swiper-item">Slide 2</div>
+            </swiper-slide>
+            <swiper-slide>
+              <div class="swiper-item">Slide 3</div>
+            </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
+          </swiper>
+        </div>
+>>>>>>> Stashed changes
       </div>
+      <transition name="slide">
+        <login 
+          v-show="showLogin"
+          class="login"
+          @closelogin="handleCloseLogin"
+          @loginsuccess="handleLoginSuccess"
+        ></login>
+      </transition>
     </div>
+    
   </div>
 </template>
 
 <script>
 import xiaohongdian from '../../components/xiaohongdian/Xiaohongdian.vue'
+import login from '../../components/login/Login.vue'
 export default {
   data() {
     return {
@@ -123,11 +208,13 @@ export default {
           // Some Swiper option/callback...
       },
       isLoggedIn: false,
-      username: ''
+      username: '游客',
+      showLogin: false
     }
   },
   components: {
-    xiaohongdian
+    xiaohongdian,
+    login
   },
   computed: {
     swiper() {
@@ -135,14 +222,7 @@ export default {
     }
   },
   mounted() {
-    if (localStorage.username) {
-      console.log('storage')
-      this.isLoggedIn = true
-      this.username = localStorage.name;
-    }else{
-      console.log('not-storage')
-
-    }
+    
   },
   methods: {
     handleForumClick(catagoryName) {
@@ -153,6 +233,17 @@ export default {
       localStorage.removeItem('username');
       this.isLoggedIn = false;
       this.username = '';
+    },
+    handleLogin() {
+      this.showLogin = true
+    },
+    handleCloseLogin() {
+      this.showLogin = false
+    },
+    handleLoginSuccess(username) {
+      this.isLoggedIn = true
+      this.username = username
+      this.showLogin = false
     }
   },
   watch: {
@@ -229,6 +320,7 @@ export default {
           position relative
           display inline-block
           margin-right 8px
+          cursor pointer
           .xiaohongdian
             position absolute
             right -7.5px
@@ -332,9 +424,26 @@ export default {
       .swiper-item
         background-color pink
         font-size 20px
+.login-container
+  position relative
+.login
+  position absolute
+  top 0
+  left 0
+  right 0
+  bottom 0
+  background-color #fff
+  z-index 50
 .fade-enter-active, .fade-leave-avtive 
     transition opacity .5s
 .fade-enter, .fade-leave-to 
-    opacity: 0
-
+    opacity 0
+.slide-enter-active, .slide-leave-active
+  transition all .7s
+.slide-enter, .slide-leave-to
+  transform translateY(-1200px)
+  opacity 0
+.slide-enter-to, .slide-leave
+  transform translateY(0)
+  opacity 1
 </style>
