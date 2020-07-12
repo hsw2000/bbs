@@ -14,24 +14,23 @@ module.exports = {
       // 提取出来的通用 chunk 和 vendor chunk。
       chunks: ["chunk-vendors", "chunk-common", "index"]
     },
-    login:{
-        entry:'./src/pages/login/login.js',
-        template:'./src/pages/login/login.html',
-        filename:'login.html',
-        title:'login',
-        chunks: ["chunk-vendors", "chunk-common", "login"]
+    management:{
+        entry:'./src/pages/management/management.js',
+        template:'./src/pages/management/management.html',
+        filename:'management.html',
+        title:'management',
+        chunks: ["chunk-vendors", "chunk-common", "management"]
     }
   },
-<<<<<<< Updated upstream
-  publicPath: process.env.NODE_ENV === 'production' ? '/projects/bbs/' : '/'
-=======
   publicPath: process.env.NODE_ENV === 'production' ? '/projects/bbs/' : '/',
   devServer: {
     proxy: {
       '/front': {
         target: 'http://zs2.lwydev.xyz'
+      },
+      '/back': {
+        target: 'http://zs2.lwydev.xyz'
       }
     }
   }
->>>>>>> Stashed changes
 }

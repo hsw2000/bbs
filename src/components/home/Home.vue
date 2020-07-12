@@ -4,24 +4,13 @@
       <li class="tabs-chosen">最新发表</li>
       <li>我的关注</li>
     </ul>
-<<<<<<< Updated upstream
-    <list></list>
-    <pagination></pagination>
-=======
-    <transition-group name="fade" mode="in-out">
+    <transition name="fade" mode="in-out">
       <list 
         :list="listdata"
         :showFollow="showFollow"
-        v-if="showFirstList" 
         key=1
       ></list>
-      <list2
-        :list="listdata"
-        :showFollow="showFollow"
-        v-else
-        key=2
-      ></list2>
-    </transition-group>
+    </transition>
     <el-pagination 
       @current-change="handleCurrentChange" 
       class="pagination"
@@ -33,26 +22,32 @@
     <div class="loader-inner line-spin-fade-loader" >
       <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     </div>
->>>>>>> Stashed changes
   </div>
 </template>
 
 <script>
 import list from '../list/List.vue'
 import pagination from '../pagination/Pagination.vue'
+import axios from 'axios'
 export default {
   data() {
     return {
-      
+      listdata: [],
+      showFollow: false,
+      currentPage: 1
     }
   },
   methods: {
-    
+    handleCurrentChange(curPage) {
+      axios.get('/front/tiezi/popular')
+      .then(function(res){
+          that.listdata = res.data.data.tiezi
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+    }
   },
-<<<<<<< Updated upstream
-  computed: {
-    
-=======
   created() {
     var that = this
     axios.get('/front/tiezi/popular')
@@ -71,7 +66,6 @@ export default {
     .catch(function (error) {
         console.log(error);
     });
->>>>>>> Stashed changes
   },
   components: {
     list,
@@ -96,8 +90,6 @@ export default {
       padding 0 10px
       font-size 22px
       line-height 48px
-<<<<<<< Updated upstream
-=======
   .pagination
     float right 
   .load-inner
@@ -122,5 +114,4 @@ export default {
   width: 100px;
   height: 100px;
 }
->>>>>>> Stashed changes
 </style>
