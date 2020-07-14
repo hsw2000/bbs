@@ -1,13 +1,20 @@
 <template>
   <div class="home">
     <ul class="tabs">
-      <li class="tabs-chosen">最新发表</li>
-      <li>我的关注</li>
+      <li 
+        :class="{'tabs-chosen': type=='newest'}" 
+        @click="handleTabsClick('newest')"
+      >最新发表</li>
+      <li 
+        :class="{'tabs-chosen': type=='follow'}"
+        @click="handleTabsClick('follow')"  
+      >我的关注</li>
     </ul>
     <transition name="fade" mode="in-out">
       <list 
         :list="listdata"
         :showFollow="showFollow"
+        v-if="listdata"
         key=1
       ></list>
     </transition>
@@ -19,9 +26,9 @@
       :total="50"
       :current-page.sync="currentPage"
     ></el-pagination>
-    <div class="loader-inner line-spin-fade-loader" >
+    <!-- <div class="loader-inner line-spin-fade-loader" >
       <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -34,38 +41,43 @@ export default {
     return {
       listdata: [],
       showFollow: false,
-      currentPage: 1
+      currentPage: 1,
+      getList: false,
+      type: 'newest'
     }
   },
   methods: {
     handleCurrentChange(curPage) {
       axios.get('/front/tiezi/popular')
       .then(function(res){
+        console.log(res.data)
           that.listdata = res.data.data.tiezi
       })
       .catch(function (error) {
           console.log(error);
       });
+    },
+    handleTabsClick(type) {
+      if(type == 'follow') {
+        this.type = 'follow';
+        this.showFollow = true;
+      }else {
+        this.type = 'newest';
+        this.showFollow = false;
+      }
     }
   },
   created() {
     var that = this
     axios.get('/front/tiezi/popular')
     .then(function(res){
-        that.listdata = res.data.data.tiezi
+      console.log(res.data.data.tiezi)
+      that.listdata = res.data.data.tiezi
     })
     .catch(function (error) {
         console.log(error);
     });
-    // 将所有板块放入 vuex
-    axios.get('/front/bankuai/list')
-    .then(function(res){
-      console.log(res)
-        that.$store.commit('handleBankuai', res.data.data.bankuai)
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+    
   },
   components: {
     list,

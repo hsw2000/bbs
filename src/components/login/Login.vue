@@ -12,7 +12,6 @@
         用户{{type}}
       </div>
     </div>
-    <strong style="display:block;text-align:center;width:100%;font-size:18px;">还未连接登录接口，直接点击“登录”或“注册”即可！</strong>
     <transition-group name="fade">
       <div 
         v-if="type=='登录'" 
@@ -23,7 +22,8 @@
           label-width="80px" 
         >
           <el-input v-model="form.bbsName" placeholder="请输入用户名"></el-input>
-          <el-input v-model="form.bbsPassword" placeholder="请输入密码"></el-input>
+          <el-input v-model="form.bbsPassword" type="password" placeholder="请输入密码"></el-input>
+          <div class="login-error" v-show="showLoginError">账号或密码错误！</div>
           <button class="submit" @click="submit">登录</button>
           <div class="toggle" @click="toggleType('注册')">没有帐号？点我注册</div>
         </el-form>
@@ -37,12 +37,14 @@
           label-width="80px" 
         >
           <el-input v-model="form.portalAccount" placeholder="请输入信息门户账号"></el-input>
-          <el-input v-model="form.portalPassword" placeholder="请输入信息门户密码"></el-input>
+          <el-input v-model="form.portalPassword" type="password" placeholder="请输入信息门户密码"></el-input>
           <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
           <el-input v-model="form.phone" placeholder="请输入手机号"></el-input>
           <el-input v-model="form.bbsName" placeholder="请输入用户名"></el-input>
-          <el-input v-model="form.bbsPassword" placeholder="请输入密码"></el-input>
-          <el-input v-model="form.confirmPassword" placeholder="请输入密码"></el-input>
+          <el-input v-model="form.bbsPassword" type="password" placeholder="请输入密码"></el-input>
+          <el-input v-model="form.confirmPassword" type="password" placeholder="请输入密码"></el-input>
+          <div class="login-error" v-show="showRegisterError">{{registerErrorMsg}}</div>
+
           <div class="checkbox">
             <el-checkbox v-model="agree"></el-checkbox>
             <span>同意<a href="www.baidu.com" target="_blank">《用户注册协议》</a></span>
@@ -64,7 +66,7 @@ export default {
     return {
       form: {
         bbsName: '',
-        bbspassWord: '',
+        bbsPassword: '',
         portalAccount: '',
         portalPassword: '',
         email: '',
@@ -72,7 +74,10 @@ export default {
         confirmPassword: ''
       },
       type: '登录',
-      agree: false
+      agree: false,
+      showLoginError: false,
+      showRegisterError: false,
+      registerErrorMsg: ''
     }
   },
   methods: {
@@ -84,18 +89,42 @@ export default {
           "username": this.form.bbsName,
           "password": this.form.bbsPassword
         }).then(function(res) {
-          console.log(res);
-          that.$emit('loginsuccess', that.form.bbsName)
-          that.$store.commit('login', that.form.bbsName)
+          const resobj = res.data.data
+          if(res.data.code == 0){
+            that.$message.success("欢迎您，"+that.form.bbsName)
+            that.$emit('loginsuccess', that.form.bbsName, resobj.imgurl)
+            that.$store.commit('login', {
+              name: that.form.bbsName, 
+              src: resobj.imgurl
+            })
+          }else {
+            console.log("error")
+            // that.$message.error("账号或密码错误！");
+            this.showLoginError = true
+          }
+        }).catch(function() {
+          that.$message.error("请求发送异常");
         })
       }else {
+        if(!this.agree) {
+          this.registerErrorMsg = '请勾选同意用户注册协议'
+          this.showRegisterError = true
+          return;
+        }
+        console.log(this.form)
+        if(!this.form.bbsPassword || !this.form.bbsName || !this.form.email || !this.form.phone || !this.form.portalAccount || !this.form.portalPassword) {
+          this.showRegisterError = true
+          this.registerErrorMsg = '请完整填写注册信息'
+          return false;
+        }
         axios.post('/front/user/register', {
           "username": this.form.bbsName,
           "password": this.form.bbsPassword,
           "email": this.form.email,
           "phonenum": this.form.phone
         }).then(function(res) {
-          console.log(res);
+          that.$message.success("账号注册成功！");
+          that.type="登录"
         })
       }
       // window.location.href = '/'
@@ -105,6 +134,13 @@ export default {
     },
     closeLogin() {
       this.$emit('closelogin')
+    }
+  },
+  watch: {
+    agree() {
+      if(this.agree == true) {
+        this.showRegisterError = false
+      }
     }
   }
 
@@ -157,7 +193,21 @@ export default {
 .component
   margin 10px auto 0 auto
   width 300px
+  .login-error
+    width 100%
+    background-color pink
+    background-color rgba(255, 245, 230, 1)
+    box-sizing border-box
+    border-width 1px
+    border-style solid
+    border-color rgba(255, 235, 204, 1)
+    border-radius 5px
+    font-size 16px
+    line-height 45px
+    color #FF9900
+    text-align center
   .checkbox
+    margin-top 10px
     span 
       margin-left 10px
   .submit

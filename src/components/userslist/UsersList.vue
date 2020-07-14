@@ -4,10 +4,10 @@
       {{title}}
     </div>
     <ul>
-      <li class="item" v-for="i in arr" :key=i>
-        <img src="icons/avatar.svg" alt="">
-        <p class="username">USERNAME</p>
-        <p class="op">{{operation}}</p>
+      <li class="item" v-for="(item, index) in list" :key=index>
+        <img :src="item.imgurl" alt="">
+        <p class="username">{{item.username}}</p>
+        <p class="op" @click="handleOp(item.username, index)">{{operation}}</p>
       </li>
     </ul>
   </div>
@@ -17,16 +17,9 @@
 export default {
   props: {
     title: String,
-
+    list: Array
   },
   computed: {
-    arr() {
-      let arr = [];
-      for(let i = 0; i < 20; i++) {
-        arr[i] = i;
-      }
-      return arr;
-    },
     operation() {
       if(this.title == '拉黑列表') {
         return '解除拉黑'
@@ -36,6 +29,22 @@ export default {
         return '取消关注'
       }
       return ''
+    }
+  },
+  methods: {
+    handleOp(username, index) {
+      if(this.title == '拉黑列表') {
+        return '解除拉黑'
+      }else if(this.title == '粉丝列表') {
+        return ''
+      }else if(this.title == '关注列表') {
+        axios.post('/front/user/unfollow', {
+          "username": username
+        }).then(function(res) {
+          console.log(res)
+          this.list.splice(index, 1)
+        }) 
+      }
     }
   }
 }

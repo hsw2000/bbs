@@ -12,25 +12,25 @@
         <span class="title-vice-time">2019-10-19 15:07:10 </span>
       </div>
       <div class="title-zan">
-        <img src="../../../public/icons/dianzan_off.svg">
+        <img :src="dianzanOffSrc">
         <span>4</span>
       </div>
     </div>
-    <ul class="detail-list">
-      <li class="item" v-for="i in arr" :key="i">
+    <ul class="detail-list" v-if="!showLoading">
+      <li class="item" v-for="(item, index) in lists" :key="index">
         <div class="item-left">
           <div class="item-left-avatar">
             <img :src="item.imgurl" alt="">
           </div>
           <div class="item-left-username">{{item.author}}</div>
           <div class="item-left-op">
-            <span>关注</span>
-            <span>私信</span>
+            <span @click="handleFollow(item.author)">关注</span>
+            <span @click=handleSendMsgClick(item.author)>私信</span>
           </div>
         </div>
         <div class="item-right">
           <div class="item-right-floor">
-            <span>2019-10-19 15:07:10&nbsp;&nbsp; </span>
+            <span>{{item.create_time}}&nbsp;&nbsp; </span>
             <span>2楼</span>
           </div>
           <div class="item-right-line"></div>
@@ -42,24 +42,50 @@
           </div>
           <div class="item-right-op">
             <div class="item-zan">
-              <img src="../../../public/icons/dianzan_off.svg" alt="">
+              <img 
+                @click="handleDianzanClick(index, item.rid)"
+                :src="item.islike ? dianzanOnSrc : dianzanOffSrc" alt=""
+              >
               <span>点赞</span>
             </div>
-            <div class="item-jubao">
-              <img src="../../../public/icons/flag.svg" alt="">
+            <div class="item-jubao" @click="handleJubaoClick">
+              <img src="icons/flag.svg" alt="">
               <span>举报</span>
             </div>
           </div>
         </div>
       </li>
-      
     </ul>
+    <el-dialog class="dialog" :title="dialogTitle" :visible.sync="dialogFormVisible" width="30%" :modal="false" top="15vh">
+      <el-input
+        type="textarea"
+        v-model="dialogContent"
+        clearable
+      >
+      </el-input>
+      <div class="dialog-buttons">
+        <div 
+          class="dialog-btn cancel"
+          @click="handleCancel"
+        >
+          取消
+        </div>
+        <div 
+          class="dialog-btn dialog-submit"
+          @click="handleSendMsg"
+        >
+          发送
+        </div>
+      </div>
+
+    </el-dialog>
+
     <div class="textarea item" v-show="!showLoading">
       <div class="item-left">
         <div class="item-left-avatar">
-          <img src="icons/default_avatar.svg" alt="">
+          <img :src="$store.state.avatarSrc" alt="">
         </div>
-        <div class="item-left-username">USERNAME</div>
+        <div class="item-left-username">{{$store.state.username}}</div>
       </div>
       <div class="textarea-right">
         <quill-editor
@@ -74,15 +100,23 @@
 </template>
 
 <script>
+import axios from 'axios'
+import {quillEditor} from 'vue-quill-editor'
+import dianzanOnSrc from './dianzan_on.svg'
+import dianzanOffSrc from './dianzan_off.svg'
+
 export default {
   props: {
     num: {
       type: Number,
       default: 10,
-    }
+    },
+    viewnum: Number
   },
   data() {
     return {
+      reply: 0,
+      tid: 0,
       lists: [],
       editorOption: {
         modules: {
@@ -132,17 +166,18 @@ export default {
       ],
       showLoading: true,
       title: '',
-      total: 0
+      total: 0,
+      dianzanOnSrc,
+      dianzanOffSrc,
+      sendMsgUser: '',
+      dialogFormVisible: false,
+      dialogTitle: '',
+      dialogContent: '',
+      dialogType: ''
     }
   },
   computed: {
-    arr() {
-      let arr = [];
-      for(let i = 0; i < this.num; i++) {
-        arr[i] = i
-      }
-      return arr
-    }
+    
   },
   methods: {
     onEditorChange({ quill, html, text }) {
@@ -151,53 +186,101 @@ export default {
     formatDate(num) {
       return this.utils.formatDate(num)
     },
-    handleDianzanClick(index) {
-      this.$set(this.dianzanSrc, index, this.dianzanSrc[index] == 'icons/dianzan_on.svg' ? 'icons/dianzan_off.svg' : 'icons/dianzan_on.svg')
+    handleDianzanClick(index, rid) {
+      console.log(index, rid)
+      var that = this
+      axios.post('/front/tiezi/like', {
+        "rid": rid
+      }).then(function(res){
+        var newobj = JSON.parse(JSON.stringify(that.lists[index]))
+        newobj.islike = newobj.islike == 1 ? 0 : 1
+        that.$set(that.lists, index, newobj)
+      }).catch(function (error) {
+          console.log(error);
+      });
     },
     handleSubmit() {
-      axios.post('/front/tiezi/view', {
-        "tid": "",
+      var that = this
+      axios.post('/front/tiezi/reply', {
+        "tid": this.tid,
         "content":this.content
       }).then(function(res){
-          that.title = res.data.data.title
-          that.total = res.data.data.total
-          that.lists = res.data.data.reply
-          // that.lists.map((item) => {
-          //   item.dianzanPath = 'icons/dianzan_off.svg'
-          // })
-          that.showLoading = false
-
+          console.log(res)
       }).catch(function (error) {
           console.log(error);
       });
       // 更新视图
       this.lists.push({
-        username: '您的用户名',
+        username: this.$store.state.username,
         content: this.content,
         time: String(Date.now())
       })
       this.content = ''
+    },
+    handleFollow(username) {
+      var that = this
+      axios.post('/front/user/follow', {
+        "username": username
+      }).then(function(res){
+          console.log(res)
+      }).catch(function (error) {
+          console.log(error);
+      });
+    },
+    handleJubaoClick(username) {
+      this.dialogType = 'jubao'
+      this.dialogTitle = '请输入举报理由'
+      this.dialogFormVisible = true
+    },
+    handleSendMsgClick(username) {
+      this.dialogType = 'sendmsg'
+      this.sendMsgUser = username
+      this.dialogTitle = '私信（注意文明用语哦）'
+      this.dialogFormVisible = true
+    },
+    handleSendMsg() {
+      var that = this
+      console.log(this.sendMsgUser)
+      if(this.dialogType == 'sendmsg') {
+        axios.post('/front/user/sendmsg', {
+          "username": this.sendMsgUser,
+          "msgcontent": this.dialogContent
+        }).then(function(res){
+            console.log(res)
+            that.$message.success('私信发送成功！')
+        }).catch(function (error) {
+            console.log(error);
+        });
+      }else {
+        // axios发送举报信息
+
+      }
+    },
+    handleCancel() {
+      this.dialogFormVisible = false;
+      this.dialogContent = ''
     }
   },
   created() {
     var that = this
+    this.tid = this.$route.query.tid
+    console.log(this.$store.state.avatarSrc)
     axios.post('/front/tiezi/view', {
-      "tid": this.$route.query.tid,
-      "page": 0
+      "tid": this.tid,
+      "page": 1
     }).then(function(res){
-      console.log(res)
-        that.title = res.data.data.title
-        that.total = res.data.data.total
-        that.lists = res.data.data.reply
-        // that.lists.map((item) => {
-        //   item.dianzanPath = 'icons/dianzan_off.svg'
-        // })
-        that.showLoading = false
-
+      const resobj = res.data.data
+      console.log(resobj)
+      // that.title = resobj.title
+      that.total = resobj.total
+      that.lists = resobj.reply
+      that.showLoading = false
     }).catch(function (error) {
         console.log(error);
     });
-
+  },
+  components: {
+    quillEditor
   }
 }
 </script>
@@ -241,7 +324,6 @@ export default {
         .item-left-avatar
           margin 0 auto
           width 55%
-          background-color pink
           border-radius 10px
         .item-left-username
           margin 10px 0
@@ -285,6 +367,34 @@ export default {
               height 20px
           .item-zan
             margin-right 20px
+  .dialog
+    box-shadow 0px 0px 5px rgba(0, 0, 0, 0.349019607843137)
+    .el-textarea
+      .el-textarea__inner
+        min-height 200px !important
+    .dialog-buttons
+      display flex
+      justify-content flex-end
+      .dialog-btn
+        box-sizing border-box
+        position relative
+        margin-top 10px
+        height 35px
+        padding 0 20px
+        border-radius 3px
+        line-height 35px
+        text-align center
+        color #333
+        background-color #a3d3ff
+        cursor pointer
+      .cancel
+        background-color #fff
+        color #999999
+        border 1px solid #999999
+        margin-right 10px
+      .dialog-submit
+        background-color rgba(0, 119, 229, 1)
+        color #fff
   .textarea
     margin-top 30px
     margin-bottom 200px

@@ -4,7 +4,10 @@
       <div class="msgbox-left-title">最近私信</div>
       <ul>
         <li v-for="(item, index) in list" :key="index">
-          <div class="msgbox-left-imgwrapper">
+          <div 
+            class="msgbox-left-imgwrapper" 
+            @click="handleAvatarClick(item.username)"
+          >
             <img :src="item.imgurl" alt="">
             <xiaohongdian :width="25" :fontsize="12"></xiaohongdian>
           </div>
@@ -18,25 +21,24 @@
         <a href="举报页面" style="position: relative;left: 93%;color:rgba(0, 180, 255, 100)">举报</a>
       </div>
       <ul id = "msgmid">
-          <li 
-            v-for="(item, index) in msglist" 
-            :class="item.direction"
-            :key="index"
-          >
-            <div class="li-inner">
-              <div class="li-inner-msg">
-                <p>很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比</p>
-                <div>56分钟前</div>
-              </div>
-              <img src="icons/avatar.svg" alt="">
+        <li 
+          v-for="(item, index) in msglist" 
+          :class="item.isme ? 'msgmid-right' : 'msgmid-left'"
+          :key="index"
+        >
+          <div class="li-inner">
+            <div class="li-inner-msg">
+              <p>{{item.content}}</p>
+              <div>{{formatTime(item.sendtime)}}</div>
             </div>
-          </li>
-
+            <img :src="item.imgurl" alt="">
+          </div>
+        </li>
       </ul>
-      <div id = "msgbottom">
+      <div id="msgbottom">
         <form>
-          <textarea id = 'message' name = 'message' rows = '10' cols = '60' placeholder="请输入私信内容"></textarea>
-          <input id = 'submit' name = 'submit' type='submit' value = '发送'>
+          <textarea id='message' name='message' rows='10' cols='60' placeholder="请输入私信内容" v-model="content"></textarea>
+          <input id='submit' @click="handleSubmit" value = '发送'>
         </form>
       </div>
     </div>
@@ -49,25 +51,54 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      list: [],
-      msglist: [],
-      content: ''
+      list: [
+        {
+          "username":'用户1',
+          "imgurl":''
+        }
+      ],
+      msglist: [{
+        "username": '对方',
+        "isme": 0,
+        "content": '很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比',
+        "sendtime": "1589587200000"
+      },{
+        "username": '自己',
+        "isme": 1,
+        "content": '很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比很多出色的海报或者平面设计通过手绘涂鸦的独特展现，与一些精致的图片和背景形成对比',
+        "sendtime": "1589587200000"
+      }],
+      content: '',
+      username: ''
     }
   },
   components: {
     xiaohongdian
   },
   methods: {
-    formatDate(str) {
-      return this.utils.formatDate(str)
+    formatTime(str) {
+      return this.utils.formatTime(str)
     },
     handleSubmit() {
-      this.lists.push({
-        direction: 'msgmid-right',
-        content: this.content,
-        time: Date.now()
+      var that = this
+      axios.post('/front/user/sendmsg', {
+        username: this.username,
+        msgcontent: this.content
+      }).then(function(res){
+        console.log(res.data)
+      }).catch(function (error) {
+          console.log(error);
+      });
+      this.msglist.push({
+        "username": '自己',
+        "isme": 1,
+        "content": this.content,
+        "sendtime": Date.now()
       })
       this.content = ''
+    },
+    handleAvatarClick(usrname) {
+      this.username = usrname
     }
   },
   mounted(){
@@ -81,7 +112,7 @@ export default {
     .then(function(res){
       console.log(res.data.data.msglist)
       that.list = res.data.data.msglist
-      axios.post('    /front/user/getmsg', {
+      axios.post('/front/user/getmsg', {
         username: that.list[0].username
       }).then(function(res){
         console.log(res.data.data.message)
@@ -91,13 +122,9 @@ export default {
       }).catch(function (error) {
           console.log(error);
       });
-
     }).catch(function (error) {
         console.log(error);
     });
-    
-
-
   },
   updated(){
     // 聊天定位到底部
@@ -181,14 +208,18 @@ export default {
   #msgmid li div.li-inner {
     width: 47%;
   }
-  .msgmid-left, .msgmid-left div.li-inner{
+  .msgmid-left{
     display: flex;
     justify-content: left;
   }
+   .msgmid-left div.li-inner {
+     display: flex;
+    /* justify-content: left; */
+    flex-direction: row-reverse;
+   }
   .msgmid-right, .msgmid-right div.li-inner {
     display: flex;
     justify-content: right;
-
   }
   #msgmid li img {
     display: block;

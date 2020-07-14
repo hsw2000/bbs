@@ -6,10 +6,10 @@
         :key="item.tid"
         @click="handleLiClick(item.tid)"
       >
-        <div class="list-item-left">【{{item.forum}}】</div>
+        <div class="list-item-left">【{{item.name}}】</div>
         <div class="list-item-mid">
           <span class="list-item-mid-top">{{item.title}}</span>
-          <span class="list-item-mid-bottom">{{formatDesc(item.desc)}}</span>
+          <span class="list-item-mid-bottom">{{formatDesc(item.create_time)}}</span>
         </div>
         <div class="list-item-midright" v-if="showFollow">
           您关注的<span>{{item.follower}}</span>{{item.op}}过
@@ -23,12 +23,12 @@
           </div>
           <div class="list-item-right-bottom">
             <span class="owner">{{item.author}}</span>
-            <span class="time">{{formatDate(item.time)}}</span>
+            <span class="time">{{formatDate(item.create_time)}}</span>
           </div>
         </div>
-      <div class="list-item-midright">
+      <!-- <div class="list-item-midright" v-if="showFollow">
         您关注的<span>才不是技术宅呢</span>点赞过
-      </div>
+      </div> -->
     </li>
     
   </ul>
@@ -40,6 +40,11 @@ export default {
     num: {
       type: Number,
       default: 10
+    },
+    list: Array,
+    showFollow: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -62,7 +67,7 @@ export default {
     },
     formatDate(num) {
       num = num || Date.now()
-      return this.utils.formatDate(num)
+      return this.utils.formatTime(num)
     },
     formatDesc(str) {
       str = str || ''
@@ -108,7 +113,7 @@ export default {
       margin-right 15px
       .list-item-right-top
         display flex
-        justify-content center
+        justify-content flex-end
         line-height 23px
         img
           width 17px

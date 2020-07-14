@@ -13,6 +13,14 @@ import utils from '../../../public/utils.js'
 
 Vue.use(VueAwesomeSwiper)
 Vue.use(ElementUI);
+Vue.prototype.utils = utils
+
+import VueQuillEditor from 'vue-quill-editor';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+
 
 Vue.config.productionTip = false
 

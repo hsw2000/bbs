@@ -5,28 +5,28 @@
         <img :src="avatarSrc" alt="">
       </div>
       <div class="myname">
-        成电小萌新
+        {{$store.state.username}}
       </div>
       <div class="info-top">
         <div>
           <span class="info-top-top">关注</span>
-          <span class="info-top-bottom">333</span>
+          <span class="info-top-bottom">{{follownum}}</span>
         </div>
         <div>
           <span class="info-top-top">帖子</span>
-          <span class="info-top-bottom">333</span>
+          <span class="info-top-bottom">{{tiezinum}}</span>
         </div>
         <div>
           <span class="info-top-top">粉丝</span>
-          <span class="info-top-bottom">333</span>
+          <span class="info-top-bottom">{{fannum}}</span>
         </div>
       </div>
       <div class="info-lin"></div>
       <ul class="info-bottom"> 
-        <li>邮箱：1229112736@qq.com</li>
-        <li>生日：2020年6月18日</li>
-        <li>星座：射手座</li>
-        <li>爱好：写代码</li>
+        <li>邮箱：{{email}}</li>
+        <li>生日：{{birthdaystr}}</li>
+        <li>星座：{{constellation}}</li>
+        <li>爱好：{{hobby}}</li>
       </ul>
       <a class="modify" @click="handleModifyInfo">修改个人信息</a>
     </div>
@@ -67,7 +67,7 @@
                 :outline="outline" 
                 :num="num"
                 :list="lists"
-                v-if="showFirstList" 
+                v-if="lists"
                 key=1
               ></list>
             </transition>
@@ -107,7 +107,7 @@
       </div>
       <div class="modify-info" v-show="!showFunctions">
         <p class="modify-title">账户资料</p>
-        <el-form :label-position="top" class="form-top">
+        <el-form label-position="top" class="form-top">
           <el-form-item  label="绑定信息门户账号（不可更改）">
             <el-input v-model="form.portal" :disabled="true"></el-input>
           </el-form-item>
@@ -197,6 +197,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      lists: [],
       chosen: 'newestMsg',
       tabIndex: 0,
       viewAnimate: '',
@@ -204,20 +205,34 @@ export default {
       num: 10,
       showFirstList: true,
       currentPage: 1,
-      showFunctions: false,
+      showFunctions: true,
+      birthday: '',
+      birthdaystr: '',
+      email: '',
+      constellation: '',
+      hobby: '',
       form: {
         portal: 2018091609009,
         bbsname: 'hushenwei',
         openBbsname: true,
         email: '',
         openEmail: true,
-        birthday: '',
+        birthday: new Date(),
         openBirthday: true,
         hobby: '',
         openHobby: true
       },
       fileList: [],
       modifyParams: '',
+      avatarSrc: '',
+      uploadImg: false,
+      followlist: [],
+      blacklist: [],
+      fanslist: [],
+      fannum: 0,
+      follownum: 0,
+      blacknum: 0,
+      tiezinum: 0,
       avatarSrc: ''
     }
   },
@@ -256,23 +271,14 @@ export default {
       }
       if(this.tabIndex > lastIdx) {
         this.viewAnimate = 'slide-left'
-        console.log('forward')
       }else {
         this.viewAnimate = 'slide-right'
-        console.log('backward')
-
       }
       this.chosen = tabName
     },
     handleCurrentChange(val) {
       if(this.currentPage != val) {
         this.currentPage = val
-        this.showFirstList = !this.showFirstList
-      }
-      if(val == 5) {
-        this.num = 5;
-      }else {
-        this.num = 10;
       }
     },
     handleModifyInfo() {
@@ -288,21 +294,33 @@ export default {
       console.log(res)
     },
     onSubmit() {
-      //下面append的东西就会到form表单数据的fields中；
-      // this.param.append('message', names);
+      var that = this
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       };
       // console.log(this.modifyParams.get('image'))
-      console.log(this.form.birthday)
-      axios.post("/front/user/uploadimg", this.modifyParams, config)
-      .then(function(result) {
-        console.log(result);
-      }).catch(function(err) {
-        console.log(err)
-      })
+      if(this.uploadImg) {
+        axios.post("/front/user/uploadimg", this.modifyParams, config)
+          .then(function(result) {
+            that.$store.commit("changeAvatarSrc", result.data.data.url)
+          }).catch(function(err) {
+            console.log(err)
+          })
+      }
+      let str = this.utils.formatDate("yyyy-mm-dd", this.form.birthday)
+      axios.post("/front/user/editinfo", {
+          birthday: str,
+          "email": this.form.email,
+	        "phonenum": 10010,
+        }).then(function(result) {
+          console.log(result);
+          that.updateInfo()
+          that.$message.success('资料修改成功！')
+        }).catch(function(err) {
+          console.log(err)
+        })
     },
     beforeUpload(file) {
       //创建临时的路径来展示图片
@@ -312,32 +330,70 @@ export default {
       //重新写一个表单上传的方法
       this.modifyParams = new FormData();
       this.modifyParams.append('image', file);
+      this.uploadImg = true
       return false;
     },
+    updateInfo() {
+      var that = this
+      axios.post('/front/user/getinfo', {   
+        username: this.$store.state.username
+      }).then(function(res){
+          console.log(res)
+          const resobj = res.data.data
+          that.birthdaystr = resobj.birthday
+          that.birthday= new Date(resobj.birthday)
+          that.email =  resobj.email
+          that.avatarSrc = resobj.imgurl
+          that.constellation= that.utils.WhatIsYourConstellation(new Date(resobj.birthday))
+          // that.hobby= resobj.hobby
+          that.form.bbsname = that.$store.state.username
+          that.form.birthday = that.birthday
+          that.form.email = that.email
+          // that.form.hobby = that.hobby
+      }).catch(function (error) {
+          console.log(error);
+      });
+    }
   },
   mounted() {
     if(this.$route.query.entry) {
-      this.chosen = this.$route.query.entry
+      if(this.$route.query.entry == 'myInfo') {
+        this.showFunctions = false
+      }else {
+        this.showFunctions = true
+        this.chosen = this.$route.query.entry
+      }
       }
   },
   created() {
     var that = this
-    // axios.post('/front/tiezi/my', {
+    axios.post('/front/tiezi/my', {
 	    
-    // }).then(function(res){
-    //     that.lists = res.data.data.tiezi
-    // }).catch(function (error) {
-    //     console.log(error);
-    // });
-    console.log("getMyinfo")
-    axios.post('/front/user/getinfo', {
-	    username: this.$store.state.username
     }).then(function(res){
-        console.log(res)
+        that.tiezinum = res.data.data.total
+        that.lists = res.data.data.tiezi
     }).catch(function (error) {
         console.log(error);
     });
+    this.updateInfo()
 
+    axios.post('/front/tiezi/my',).then(function(res){
+        that.lists = res.data.data.tiezi
+    }).catch(function (error) {
+        console.log(error);
+    });
+    axios.post('/front/user/folist').then(function(res){
+        that.follownum = res.data.data.total
+        that.followlist = res.data.data.user
+    }).catch(function (error) {
+        console.log(error);
+    });
+    axios.post('/front/user/fanlist').then(function(res){
+        that.fannum = res.data.data.total
+        that.fanlist = res.data.data.user
+    }).catch(function (error) {
+        console.log(error);
+    });
   },
   watch: {
     '$route'(to, from) {
@@ -349,7 +405,12 @@ export default {
           this.showFunctions = false
       }
     }
-  }
+  },
+  // computed: {
+  //   avatarSrc() {
+  //     return this.$store.state.avatarSrc
+  //   }
+  // }
 }
 </script>
 
@@ -383,6 +444,7 @@ export default {
         font-size 13px
         color #666
         line-height 24px
+        text-align center
     .info-line
       margin 20px auto 30px auto
       width 96%
@@ -465,13 +527,18 @@ export default {
  
          margin-left 15px
         width 95%
+      .my-posts
+        width 95%
+        margin 0 auto
+        .pagination
+          float right
       .msgbox
         margin-top 5px
       .blacklist
         margin-left 15px
       .newest-msg, .my-posts, .msgbox, .blacklist, .followlist, .fanslist
         position absolute
-        left 0
+        left 10px
         top 40px
     .modify-info
       margin-left 40px

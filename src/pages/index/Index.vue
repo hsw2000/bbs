@@ -14,7 +14,7 @@
       </div>
       <div class="info">
         <div class="info-left">
-          <img src="/icons/default_avatar.svg" />
+          <img :src="avatarSrc" />
         </div>
         <div class="info-right">
           <div class="info-right-top">
@@ -149,10 +149,13 @@
 <script>
 import xiaohongdian from '../../components/xiaohongdian/Xiaohongdian.vue'
 import login from '../../components/login/Login.vue'
+import defaultSrc from './default_avatar.svg'
+import axios from 'axios'
 export default {
   data() {
     return {
-      forumcatagory:['船新动向','技术交流','代码星球','神技水吧','硬件星球','科技资讯'],
+      // forumcatagory:['船新动向','技术交流','代码星球','神技水吧','硬件星球','科技资讯'],
+      forumcatagory: [],
       swiperOptions: {
           pagination: {
             el: '.swiper-pagination'
@@ -161,7 +164,8 @@ export default {
       },
       isLoggedIn: false,
       username: '游客',
-      showLogin: false
+      showLogin: false,
+      avatarSrc: defaultSrc
     }
   },
   components: {
@@ -174,12 +178,28 @@ export default {
     }
   },
   mounted() {
-    
+    var that = this
+    // 将所有板块放入 vuex
+    axios.get('/front/bankuai/list')
+    .then(function(res){
+      that.$store.commit('handleBankuai', res.data.data.bankuai)
+      res.data.data.bankuai.map((val) => {
+        that.forumcatagory.push(val.name)
+      })
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   },
   methods: {
     handleForumClick(catagoryName) {
-      console.log(catagoryName)
-      this.$router.push('/forum-home')
+      this.$router.push({
+        path: '/forum-home',
+        query: {
+          forum: catagoryName,
+          bid: this.$store.state.bankuaiMap[catagoryName]
+        }
+      })
     },
     handleLogout() {
       localStorage.removeItem('username');
@@ -192,15 +212,11 @@ export default {
     handleCloseLogin() {
       this.showLogin = false
     },
-    handleLoginSuccess(username) {
+    handleLoginSuccess(username, src) {
       this.isLoggedIn = true
       this.username = username
+      this.avatarSrc = src
       this.showLogin = false
-    }
-  },
-  watch: {
-    '$store.state.isLoggedIn': function () {
-      this.isLoggedIn = true
     }
   }
 }
@@ -368,6 +384,7 @@ export default {
             font-size 14px
             line-height 37px
             color #333
+            text-decoration none
     .swiper-container
       margin-top 40px
       width 100%

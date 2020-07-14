@@ -3,18 +3,18 @@
     <div class="title">
       <div class="title-left">
         <div class="title-left-top">
-          <span class="title-left-top-big">神技水吧</span>
+          <span class="title-left-top-big">{{name}}</span>
           <span class="title-left-top-small">
-            今日新增: 57     | 总主题: 55177
+            今日新增: {{todaynew}}     | 总主题: {{total}}
           </span>
         </div>
         <div class="title-left-bottom">
-          万物皆可水吧，来水吧边喝边聊吧~ ( ^ - ^)>旦
+          {{desc}}
         </div>
       </div>
       <div class="title-right">
-        版主: 水吧老板，皮卡皮卡球
-        <a href="">快速发帖</a>
+        版主: {{banzhu}}
+        <a @click="handlePostNew">快速发帖</a>
       </div>
     </div>
     <div class="zhiding-title">
@@ -33,12 +33,13 @@
     </div>
     <list
       :list="topLists"
+      v-if="topLists"
     ></list>
     <div class="newest-title">最新</div>
     <transition name="fade">
-      <list  
-        
+      <list
         :list="newestLists"
+        v-if="newestLists"
       ></list>
     </transition>
     <el-pagination
@@ -72,38 +73,107 @@
 <script>
 import list from '../list/List.vue'
 import pagination from '../pagination/Pagination.vue'
+import axios from 'axios'
+import {quillEditor} from 'vue-quill-editor'
 export default {
+  data() {
+    return {
+      total: 0,
+      todaynew: 0,
+      name: '',
+      bid: '',
+      desc: '',
+      banzhu: '',
+      content: '',
+      postTitle: '',
+      topLists: [],
+      newestLists: [],
+      dialogFormVisible: false,
+      page:1,
+      editorOption: {
+        modules: {
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike'],
+              ['code-block'],     //引用，代码块
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
+              [{ 'script': 'sub'}, { 'script': 'super' }],   // 上下标
+              [{ 'indent': '-1'}, { 'indent': '+1' }],     // 缩进
+              [{ 'direction': 'rtl' }],             // 文本方向
+              [{ 'color': [] }],     // 字体颜色，字体背景颜色
+              ['clean'],    //清除字体样式
+              ['image']    //上传图片、上传视频
+            ]
+          }
+        }
+      }
+    }
+  },
   components: {
-    list
+    list,
+    quillEditor
   },
   methods: {
-    handleCurrentChange(val) {
-      
-      
-    },
     postAPost() {
       this.dialogFormVisible = true;
     },
     handleSubmit() {
-      this.dialogFormVisible = false
+      var that = this
+      axios.post('/front/tiezi/new', {
+          "bid": that.bid,
+          "title": that.postTitle,
+	        "content": that.content
+        }).then(function(res){
+          console.log(res)
+          that.handleCurrentChange(1)
+          that.$message.success('发帖成功！')
+          that.dialogFormVisible = false
+        }).catch(function (error) {
+            console.log(error);
+        });
       this.content = ''
       this.postTitle = ''
-      console.log(this.newestLists[0])
-      console.log(this.topLists[0])
+    },
+    handleCurrentChange(page) {
+      this.page = page
+      var that = this
+      axios.post('/front/tiezi/list', {
+        "bid": that.bid,
+        "page": page
+      }).then(function(res){
+        const resobj = res.data.data
+        that.total = resobj.total
+        that.newestLists = resobj.tiezi
+        that.todaynew = resobj.todaynew
+        that.topLists = JSON.parse(JSON.stringify(resobj.tiezi))
+      }).catch(function (error) {
+          console.log(error);
+      });
+    },
+    handlePostNew() {
+      this.dialogFormVisible = true
     }
   },
   created() {
     var that = this
-    axios.post('/front/tiezi/list', {
-      "bid":"",
-	    "page":""
-    }).then(function(res){
-        that.newestLists = res.data.data.tiezi
-        that.topLists = JSON.parse(JSON.stringify(res.data))
-    }).catch(function (error) {
-        console.log(error);
-    });
+    this.name = this.$route.query.forum
+    this.bid = this.$route.query.bid
+    const bankuai = this.$store.state.bankuai[this.bid]
+    this.desc = bankuai.description
+    this.banzhu = bankuai.banzhu
+    this.handleCurrentChange(1)
   },
+  watch: {
+    '$route'(to, from) {
+      this.name = to.query.forum
+      this.bid = to.query.bid
+      this.page = 1
+      const bankuai = this.$store.state.bankuai[this.bid]
+      this.desc = bankuai.description
+      this.banzhu = bankuai.banzhu
+      this.handleCurrentChange(1)
+    }
+  }
 }
 </script>
 
@@ -136,6 +206,7 @@ export default {
       line-height 76px
       a
         margin-left 20px
+        cursor pointer
   .zhiding-title
     position relative
     display flex
